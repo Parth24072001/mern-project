@@ -35,7 +35,6 @@ const registerUser = asyncHandler(async (req, res) => {
   // return res
 
   const { fullName, email, username, password } = req.body;
-  //console.log("email: ", email);
 
   if (
     [fullName, email, username, password].some((field) => field?.trim() === "")
@@ -50,38 +49,12 @@ const registerUser = asyncHandler(async (req, res) => {
   if (existedUser) {
     throw new ApiError(409, "User with email or username already exists");
   }
-  //console.log(req.files);
-
-  const avatarLocalPath = req.files?.avatar[0]?.path;
-  //const coverImageLocalPath = req.files?.coverImage[0]?.path;
-
-  let coverImageLocalPath;
-  if (
-    req.files &&
-    Array.isArray(req.files.coverImage) &&
-    req.files.coverImage.length > 0
-  ) {
-    coverImageLocalPath = req.files.coverImage[0].path;
-  }
-
-  if (!avatarLocalPath) {
-    throw new ApiError(400, "Avatar file is required");
-  }
-
-  const avatar = await uploadOnCloudinary(avatarLocalPath);
-  const coverImage = await uploadOnCloudinary(coverImageLocalPath);
-
-  if (!avatar) {
-    throw new ApiError(400, "Avatar file is required");
-  }
 
   const user = await User.create({
     fullName,
-    avatar: avatar.url,
-    coverImage: coverImage?.url || "",
     email,
     password,
-    username: username.toLowerCase(),
+    username: username?.toLowerCase(),
   });
 
   const createdUser = await User.findById(user._id).select(
@@ -106,7 +79,6 @@ const loginUser = asyncHandler(async (req, res) => {
   //send cookie
 
   const { email, username, password } = req.body;
-  console.log(email);
 
   if (!username && !email) {
     throw new ApiError(400, "username or email is required");
@@ -283,9 +255,26 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 });
 
 const deleteAccount = asyncHandler(async (req, res) => {
+  const { fullName, email } = req.body;
+
+  if (!fullName || !email) {
+    throw new ApiError(400, "All fields are required");
+  }
+
+  const user = await User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      $set: {
+        fullName,
+        email: email,
+      },
+    },
+    { new: true }
+  ).select("-password");
+
   return res
     .status(200)
-    .json(new ApiResponse(200, user, "Account Deleted successfully"));
+    .json(new ApiResponse(200, user, "Account details updated successfully"));
 });
 export {
   registerUser,
