@@ -35,6 +35,7 @@ const userSchema = new Schema(
     },
   },
   {
+    collection: "mern_user",
     timestamps: true,
   }
 );

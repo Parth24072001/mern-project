@@ -7,6 +7,7 @@ const Home = () => {
             <div className={"common_parent_container"}>
                 <Routes>
                     <Route path="/dashboard" index element={<Dashboard />} />
+                    <Route path="/" index element={<Dashboard />} />
                 </Routes>
             </div>
         </>
