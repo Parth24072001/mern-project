@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "./modules/users/components/Dashboard";
+import ChangePassword from "./modules/users/components/ChangePassword";
 
 const Home = () => {
     return (
@@ -8,6 +9,11 @@ const Home = () => {
                 <Routes>
                     <Route path="/dashboard" index element={<Dashboard />} />
                     <Route path="/" index element={<Dashboard />} />
+                    <Route
+                        path="/change-password"
+                        index
+                        element={<ChangePassword />}
+                    />
                 </Routes>
             </div>
         </>

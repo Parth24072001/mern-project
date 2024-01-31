@@ -255,18 +255,30 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 });
 
 const deleteAccount = asyncHandler(async (req, res) => {
-  const { fullName, email } = req.body;
+  // You might want to prompt the user for confirmation before proceeding with deletion
+  const user = await User.findByIdAndDelete(req.user?._id);
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, null, "Account deleted successfully"));
+});
+
+const forgetPassword = asyncHandler(async (req, res) => {
+  const { password } = req.body;
 
   if (!fullName || !email) {
-    throw new ApiError(400, "All fields are required");
+    throw new ApiError(400, "password are required");
   }
 
   const user = await User.findByIdAndUpdate(
     req.user?._id,
     {
       $set: {
-        fullName,
-        email: email,
+        password: password,
       },
     },
     { new: true }
@@ -274,8 +286,9 @@ const deleteAccount = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, user, "Account details updated successfully"));
+    .json(new ApiResponse(200, user, "Password change successfully"));
 });
+
 export {
   registerUser,
   loginUser,
@@ -285,4 +298,5 @@ export {
   getCurrentUser,
   updateAccountDetails,
   deleteAccount,
+  forgetPassword,
 };

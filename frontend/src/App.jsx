@@ -5,35 +5,41 @@ import Signup from "./modules/users/components/Signup";
 import Login from "./modules/users/components/Login";
 import withAuthentication from "./shared/components/auth/withAuthentication";
 import withoutAuthentication from "./shared/components/auth/withoutAuthentication";
-// import { useEffect } from "react";
-// import { getItemFromCookie, setItemInCookie } from "./shared/helpers/utils";
-// import { ACCESSTOKEN, REFRESHTOKEN } from "./shared/helpers/constant";
-// import { rereshToken } from "./shared/api";
+import { useEffect } from "react";
+import { getItemFromCookie, setItemInCookie } from "./shared/helpers/utils";
+import { ACCESSTOKEN, REFRESHTOKEN } from "./shared/helpers/constant";
+import { rereshToken } from "./shared/api";
 
 function App() {
     const UnAuthenticated = () => <Outlet />;
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         const refreshToken = getItemFromCookie(REFRESHTOKEN);
+    useEffect(() => {
+        const fetchData = async () => {
+            const refreshToken = getItemFromCookie(REFRESHTOKEN);
 
-    //         if (refreshToken) {
-    //             try {
-    //                 const data = await rereshToken(refreshToken);
+            if (refreshToken) {
+                try {
+                    const data = await rereshToken(refreshToken);
 
-    //                 setItemInCookie(ACCESSTOKEN, `${data?.data?.accessToken}`);
-    //                 setItemInCookie(
-    //                     REFRESHTOKEN,
-    //                     `${data?.data?.refreshToken}`
-    //                 );
-    //             } catch (error) {
-    //                 // Handle errors if needed
-    //                 console.error("Error refreshing token:", error);
-    //             }
-    //         }
-    //     };
+                    setItemInCookie(
+                        ACCESSTOKEN,
+                        `${data?.data?.data?.accessToken}`
+                    );
+                } catch (error) {
+                    console.error("Error refreshing token:", error);
+                }
+            }
+        };
 
-    //     getItemFromCookie(REFRESHTOKEN) && fetchData(); // Call the async function
-    // }, []); // Ensure the dependency array is empty if you want it to run only once
+        const refreshTokenFromCookie = getItemFromCookie(REFRESHTOKEN);
+
+        if (refreshTokenFromCookie) {
+            // Call the async function after a 5-minute delay
+            const delayInMilliseconds = 1 * 60 * 1000; // 5 minutes in milliseconds
+            setTimeout(() => {
+                fetchData();
+            }, delayInMilliseconds);
+        }
+    }, []); // Ensure the dependency array is empty if you want it to run only once
 
     return (
         <>

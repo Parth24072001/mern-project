@@ -9,3 +9,12 @@ export const Login = (data) => {
 export const me = () => {
     return api.get(`users/current-user`);
 };
+export const UpdateDetails = (data) => {
+    return api.patch(`users/update-account`, data);
+};
+export const PasswordChange = (data) => {
+    return api.post(`users/change-password`, data);
+};
+export const DeleteAccount = (data) => {
+    return api.delete(`users/delete-account`, data);
+};
