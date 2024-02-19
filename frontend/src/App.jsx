@@ -15,7 +15,6 @@ function App() {
     useEffect(() => {
         const fetchData = async () => {
             const refreshToken = getItemFromCookie(REFRESHTOKEN);
-
             if (refreshToken) {
                 try {
                     const data = await rereshToken(refreshToken);
@@ -33,13 +32,12 @@ function App() {
         const refreshTokenFromCookie = getItemFromCookie(REFRESHTOKEN);
 
         if (refreshTokenFromCookie) {
-            // Call the async function after a 5-minute delay
-            const delayInMilliseconds = 1 * 60 * 1000; // 5 minutes in milliseconds
+            const delayInMilliseconds = 1 * 60 * 1000;
             setTimeout(() => {
                 fetchData();
             }, delayInMilliseconds);
         }
-    }, []); // Ensure the dependency array is empty if you want it to run only once
+    }, []);
 
     return (
         <>
