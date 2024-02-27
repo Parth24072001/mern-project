@@ -29,16 +29,3 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     throw new ApiError(401, error?.message || "Invalid access token");
   }
 });
-
-const App =() => {
-  useEffect (() => {
-}
-console.log("Am I executed?
-}, [undefined]);
-return (
-<div
-);
-className="App">
-<h1>Title</h1>
-</div>
-export default App;
