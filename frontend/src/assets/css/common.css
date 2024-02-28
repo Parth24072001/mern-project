@@ -22,4 +22,7 @@ input:disabled{
 .Toastify__toast-theme--light{
   @apply !bg-blackolive !text-white
 } */
+.svg_icon svg{
+@apply w-[30px] h-[30px]
+}
 
