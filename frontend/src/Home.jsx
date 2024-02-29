@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useWindowSize } from "@uidotdev/usehooks";
 import Sidebar from "./shared/components/sidebar/Sidebar";
 import Header from "./shared/components/header/Header";
+import Profile from "./modules/users/components/Profile";
 
 const Home = () => {
     const { width } = useWindowSize();
@@ -35,6 +36,7 @@ const Home = () => {
                             index
                             element={<ChangePassword />}
                         />
+                        <Route path="/profile" index element={<Profile />} />
                     </Routes>
                 </main>
             </div>

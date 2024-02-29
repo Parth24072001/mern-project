@@ -5,24 +5,27 @@ input:disabled{
   @apply  bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500
 }
 
-/* .custom-toast {
-  background-color: #4caf50;
-  color: #fff;
-  font-size: 16px;
-  text-align: center;
-  bottom: 0; 
-  left: 50%; 
-  transform: translateX(-50%); 
-}
-.Toastify__toast-icon{
-  @apply !hidden
-}
-.Toastify__progress-bar,.Toastify__progress-bar--bg,.Toastify__close-button {  @apply !hidden}
-
-.Toastify__toast-theme--light{
-  @apply !bg-blackolive !text-white
-} */
 .svg_icon svg{
-@apply w-[30px] h-[30px]
+@apply !w-[30px] !h-[30px]
 }
 
+
+.sidebarContent {
+  @apply flex grow flex-col overflow-y-auto bg-white px-6 pb-4;
+}
+
+.sidebarList {
+  @apply flex gap-x-3 rounded-md p-2 text-sm leading-6 font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 items-center;
+}
+.sidebarListActive {
+  @apply flex gap-x-3 rounded-md p-2 text-sm leading-6 font-medium   text-gray-900 bg-gray-100;
+}
+.sidebarListActive svg path {
+  stroke: #6b7280 !important;
+}
+.sidebarListActive svg path {
+  @apply stroke-aurometalaaurus;
+}
+.sidebarListActive svg path {
+  stroke: #6b7280 !important;
+}

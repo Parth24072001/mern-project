@@ -32,7 +32,7 @@ function Header({ sidebarOpen, setSidebarOpen, width }) {
 
                 <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 justify-end ">
                     <div className="flex items-center gap-5 ">
-                        <button onClick={() => navigate("/dashboard")}>
+                        <button onClick={() => navigate("/profile")}>
                             {/* <Icon
                                 type="avatar"
                                 fill={true}
