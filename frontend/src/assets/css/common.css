@@ -9,7 +9,6 @@ input:disabled{
 @apply !w-[30px] !h-[30px]
 }
 
-
 .sidebarContent {
   @apply flex grow flex-col overflow-y-auto bg-white px-6 pb-4;
 }
