@@ -1,11 +1,17 @@
 import clsx from "clsx";
-import ProfileIcon from "../../../assets/images/icons/avatar.svg?react";
+import ProfileIcon from "../../../assets/images/icons/Home.svg?react";
+import SplitIcon from "../../../assets/images/icons/Database.svg?react";
+import SettingsIcon from "../../../assets/images/icons/settings.svg?react";
+import LogoutIcon from "../../../assets/images/icons/settings.svg?react";
+
 import CloseIcon from "../../../assets/images/icons/cross-23.svg?react";
 
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 function Sidebar({ setSidebarOpen, sidebarOpen }) {
+  const { pathname } = useLocation();
+
   const navigation = [
     {
       name: "Dashboard",
@@ -21,7 +27,7 @@ function Sidebar({ setSidebarOpen, sidebarOpen }) {
       name: "Splitwise",
       href: "/splitwise",
       action: "CREATE_ADMIN",
-      icon: ProfileIcon,
+      icon: SplitIcon,
       current: false,
       activeMenu: "/splitwise",
     },
@@ -29,7 +35,7 @@ function Sidebar({ setSidebarOpen, sidebarOpen }) {
     {
       name: "Setting",
       href: "/setting",
-      icon: ProfileIcon,
+      icon: SettingsIcon,
       action: "Setting",
       current: false,
       activeMenu: "setting",
@@ -37,7 +43,7 @@ function Sidebar({ setSidebarOpen, sidebarOpen }) {
     {
       name: "Logout",
       href: "/logout",
-      icon: ProfileIcon,
+      icon: LogoutIcon,
       action: "logout",
       current: false,
       activeMenu: "logout",
@@ -105,10 +111,11 @@ function Sidebar({ setSidebarOpen, sidebarOpen }) {
                             <li key={item.name} className={clsx({})}>
                               <Link
                                 to={item.href}
-                                className={clsx("sidebarList", {})}
+                                className={clsx("sidebarList", {
+                                  "bg-slate-400": item.activeMenu === pathname,
+                                })}
                               >
                                 <item.icon aria-hidden="true" />
-
                                 {item.name}
                               </Link>
                             </li>
@@ -132,9 +139,13 @@ function Sidebar({ setSidebarOpen, sidebarOpen }) {
                 <ul role="list" className="-mx-2 space-y-1 ">
                   {navigation.map((item) => (
                     <li key={item.name} className={clsx({})}>
-                      <Link to={item.href} className={clsx("sidebarList", {})}>
+                      <Link
+                        to={item.href}
+                        className={clsx("sidebarList", {
+                          "bg-gray-100": item.activeMenu === "/splitwise",
+                        })}
+                      >
                         <item.icon aria-hidden="true" />
-
                         {item.name}
                       </Link>
                     </li>

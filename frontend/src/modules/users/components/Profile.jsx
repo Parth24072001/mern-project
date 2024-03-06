@@ -3,12 +3,16 @@ import { useForm, Controller } from "react-hook-form";
 import useUserInfo from "../hooks/useUserInfo";
 import useUpdateUser from "../hooks/useUpdateUser";
 import useDeleteAccount from "../hooks/useDeleteAccount";
+import BackIcon from "../../../assets/images/icons/arrowright.svg?react";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const { data: userInfo, refetch } = useUserInfo();
   const { mutate: DeleteAccount } = useDeleteAccount();
   const { mutate: UpdateDetails } = useUpdateUser(refetch);
   const { handleSubmit, control, setValue } = useForm();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Set initial values based on API response
@@ -29,9 +33,14 @@ const Profile = () => {
       <main className="w-full min-h-screen py-1 flex justify-center">
         <div className="p-2 md:p-4">
           <div className="w-full px-6 pb-8 mt-8 sm:max-w-xl sm:rounded-lg">
-            <h2 className="pl-6 text-2xl font-bold sm:text-xl">
-              Public Profile
-            </h2>
+            <div className="flex justify-start items-center gap-3">
+              <button onClick={() => navigate("/dashboard ")}>
+                <BackIcon />
+              </button>
+              <h2 className="pl-6 text-2xl font-bold sm:text-xl">
+                Public Profile
+              </h2>
+            </div>
 
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid max-w-2xl mx-auto mt-8">

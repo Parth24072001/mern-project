@@ -28,3 +28,6 @@ input:disabled{
 .sidebarListActive svg path {
   stroke: #6b7280 !important;
 }
+.sidebarList svg{
+  @apply h-[24px] w-[24px]
+}
