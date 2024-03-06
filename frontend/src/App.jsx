@@ -11,47 +11,44 @@ import { ACCESSTOKEN, REFRESHTOKEN } from "./shared/helpers/constant";
 import { rereshToken } from "./shared/api";
 
 function App() {
-    const UnAuthenticated = () => <Outlet />;
-    useEffect(() => {
-        const fetchData = async () => {
-            const refreshToken = getItemFromCookie(REFRESHTOKEN);
-            if (refreshToken) {
-                try {
-                    const data = await rereshToken(refreshToken);
+  const UnAuthenticated = () => <Outlet />;
+  useEffect(() => {
+    const fetchData = async () => {
+      const refreshToken = getItemFromCookie(REFRESHTOKEN);
+      if (refreshToken) {
+        try {
+          const data = await rereshToken(refreshToken);
 
-                    setItemInCookie(
-                        ACCESSTOKEN,
-                        `${data?.data?.data?.accessToken}`
-                    );
-                } catch (error) {
-                    console.error("Error refreshing token:", error);
-                }
-            }
-        };
-
-        const refreshTokenFromCookie = getItemFromCookie(REFRESHTOKEN);
-
-        if (refreshTokenFromCookie) {
-            const delayInMilliseconds = 1 * 60 * 1000;
-            setTimeout(() => {
-                fetchData();
-            }, delayInMilliseconds);
+          setItemInCookie(ACCESSTOKEN, `${data?.data?.data?.accessToken}`);
+        } catch (error) {
+          console.error("Error refreshing token:", error);
         }
-    }, []);
+      }
+    };
 
-    return (
-        <>
-            <Routes>
-                <Route path="/*" element={withAuthentication(Home)}>
-                    <Route index element={<Navigate to={"/"} />} />
-                </Route>
-                <Route path="" element={withoutAuthentication(UnAuthenticated)}>
-                    <Route path="login" index element={<Login />} />
-                    <Route path="signup" index element={<Signup />} />
-                </Route>
-            </Routes>
-        </>
-    );
+    const refreshTokenFromCookie = getItemFromCookie(REFRESHTOKEN);
+
+    if (refreshTokenFromCookie) {
+      const delayInMilliseconds = 1 * 60 * 1000;
+      setTimeout(() => {
+        fetchData();
+      }, delayInMilliseconds);
+    }
+  }, []);
+
+  return (
+    <>
+      <Routes>
+        <Route path="/*" element={withAuthentication(Home)}>
+          <Route index element={<Navigate to={"/"} />} />
+        </Route>
+        <Route path="" element={withoutAuthentication(UnAuthenticated)}>
+          <Route path="login" index element={<Login />} />
+          <Route path="signup" index element={<Signup />} />
+        </Route>
+      </Routes>
+    </>
+  );
 }
 
 export default App;
