@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useLogin from "../hooks/useLogin";
+import TogglePasswordVisibilityButton from "../../../shared/components/TogglePasswordVisibilityButton/TogglePasswordVisibilityButton";
+import { useState } from "react";
 
 const Login = () => {
   const { mutate: LoginMutation } = useLogin();
+  const [passwordShown, setPasswordShown] = useState(false);
 
   const {
     register,
@@ -18,7 +21,7 @@ const Login = () => {
 
   return (
     <div>
-      <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-gray-50">
+      <div className="flex flex-col items-center min-h-screen pt-6 justify-center sm:pt-0 bg-gray-50">
         <div>
           <Link to="/">
             <h3 className="text-4xl font-bold text-gray-900">
@@ -52,22 +55,28 @@ const Login = () => {
                 )}
               </div>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 ">
               <label
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
               >
                 Password
               </label>
-              <div className="flex flex-col items-start">
+              <div className="flex flex-col items-start relative">
                 <input
-                  type="password"
+                  type={passwordShown ? "text" : "password"}
                   {...register("password", {
                     required: "Password is required",
                   })}
                   className={`bg-gray-50 border ${
                     errors.password ? "border-red-500" : "border-gray-300"
                   } text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                />
+                <TogglePasswordVisibilityButton
+                  isPasswordShown={passwordShown}
+                  togglePasswordVisibility={() =>
+                    setPasswordShown(!passwordShown)
+                  }
                 />
                 {errors.password && (
                   <span className="text-red-500 text-xs mt-1">

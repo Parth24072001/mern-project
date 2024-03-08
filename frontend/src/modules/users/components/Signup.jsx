@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useSignUp from "../hooks/useSignUp";
+import { useState } from "react";
+import TogglePasswordVisibilityButton from "../../../shared/components/TogglePasswordVisibilityButton/TogglePasswordVisibilityButton";
 
 const Signup = () => {
   const { mutate: signUpMutation } = useSignUp();
+
+  const [passwordShown, setPasswordShown] = useState(false);
 
   const {
     register,
@@ -18,7 +22,7 @@ const Signup = () => {
   return (
     <div>
       <div>
-        <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-gray-50">
+        <div className="flex flex-col items-center min-h-screen pt-6 justify-center sm:pt-0 bg-gray-50">
           <div>
             <Link to="/">
               <h3 className="text-4xl font-bold text-gray-900">
@@ -113,9 +117,9 @@ const Signup = () => {
                 >
                   Password
                 </label>
-                <div className="flex flex-col items-start">
+                <div className="flex flex-col items-start relative">
                   <input
-                    type="password"
+                    type={passwordShown ? "text" : "password"}
                     name="password"
                     id="password"
                     {...register("password", {
@@ -124,6 +128,12 @@ const Signup = () => {
                     className={`bg-gray-50 border ${
                       errors.password ? "border-red-500" : "border-gray-300"
                     } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-2`}
+                  />
+                  <TogglePasswordVisibilityButton
+                    isPasswordShown={passwordShown}
+                    togglePasswordVisibility={() =>
+                      setPasswordShown(!passwordShown)
+                    }
                   />
                   {errors.password && (
                     <span className="text-red-500 text-xs mt-1">

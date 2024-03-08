@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import clsx from "clsx";
 import styles from "../../../assets/css/header.module.css";
-import ProfileIcon from "../../../assets/images/icons/avatar.svg?react";
+import ProfileIcon from "../../../assets/images/icons/user.svg?react";
+import QrIcon from "../../../assets/images/icons/qr-code.svg?react";
+import NotificationIcon from "../../../assets/images/icons/bell-dot.svg?react";
+
 import MenuIcon from "../../../assets/images/icons/menu.svg?react";
 
 import { useNavigate } from "react-router-dom";
@@ -31,13 +34,13 @@ function Header({ setSidebarOpen, width }) {
 
         <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 justify-end ">
           <div className="flex items-center gap-5 ">
+            <button onClick={() => navigate("/")}>
+              <QrIcon />
+            </button>
+            <button onClick={() => navigate("/")}>
+              <NotificationIcon />
+            </button>
             <button onClick={() => navigate("/profile")}>
-              {/* <Icon
-                                type="avatar"
-                                fill={true}
-                                size="icon-sm"
-                                className="avatar"
-                            /> */}
               <ProfileIcon />
             </button>
           </div>

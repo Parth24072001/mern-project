@@ -1,34 +1,31 @@
 import clsx from "clsx";
 import ProfileIcon from "../../../assets/images/icons/Home.svg?react";
-import SplitIcon from "../../../assets/images/icons/Database.svg?react";
+import SplitIcon from "../../../assets/images/icons/split.svg?react";
 import SettingsIcon from "../../../assets/images/icons/settings.svg?react";
-import LogoutIcon from "../../../assets/images/icons/settings.svg?react";
+import LogoutIcon from "../../../assets/images/icons/log-out.svg?react";
 
 import CloseIcon from "../../../assets/images/icons/cross-23.svg?react";
 
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { removeItemInCookie } from "../../helpers/utils";
 function Sidebar({ setSidebarOpen, sidebarOpen }) {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const navigation = [
     {
       name: "Dashboard",
       href: "/",
       icon: ProfileIcon,
-      current: true,
-      active: "/",
-      action: "DASHBOARD",
-      activeMenu: "/dashboard",
+      activeMenu: "/",
     },
 
     {
       name: "Splitwise",
       href: "/splitwise",
-      action: "CREATE_ADMIN",
       icon: SplitIcon,
-      current: false,
       activeMenu: "/splitwise",
     },
 
@@ -36,19 +33,16 @@ function Sidebar({ setSidebarOpen, sidebarOpen }) {
       name: "Setting",
       href: "/setting",
       icon: SettingsIcon,
-      action: "Setting",
-      current: false,
-      activeMenu: "setting",
-    },
-    {
-      name: "Logout",
-      href: "/logout",
-      icon: LogoutIcon,
-      action: "logout",
-      current: false,
-      activeMenu: "logout",
+      activeMenu: "/setting",
     },
   ];
+
+  const onClickLogout = () => {
+    removeItemInCookie("accessToken");
+    removeItemInCookie("refreshToken");
+    navigate("/login");
+  };
+
   return (
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -108,11 +102,11 @@ function Sidebar({ setSidebarOpen, sidebarOpen }) {
                       <li>
                         <ul role="list" className="-mx-2 space-y-1 ">
                           {navigation.map((item) => (
-                            <li key={item.name} className={clsx({})}>
+                            <li key={item.name}>
                               <Link
                                 to={item.href}
                                 className={clsx("sidebarList", {
-                                  "bg-slate-400": item.activeMenu === pathname,
+                                  "bg-slate-200": item.activeMenu === pathname,
                                 })}
                               >
                                 <item.icon aria-hidden="true" />
@@ -123,6 +117,13 @@ function Sidebar({ setSidebarOpen, sidebarOpen }) {
                         </ul>
                       </li>
                     </ul>
+                    <button
+                      onClick={() => onClickLogout()}
+                      className={clsx("sidebarList")}
+                    >
+                      <LogoutIcon />
+                      Logout
+                    </button>
                   </nav>
                 </div>
               </Dialog.Panel>
@@ -142,7 +143,7 @@ function Sidebar({ setSidebarOpen, sidebarOpen }) {
                       <Link
                         to={item.href}
                         className={clsx("sidebarList", {
-                          "bg-gray-100": item.activeMenu === "/splitwise",
+                          "bg-slate-200": item.activeMenu === pathname,
                         })}
                       >
                         <item.icon aria-hidden="true" />
@@ -153,6 +154,14 @@ function Sidebar({ setSidebarOpen, sidebarOpen }) {
                 </ul>
               </li>
             </ul>
+
+            <button
+              onClick={() => onClickLogout()}
+              className={clsx("sidebarList")}
+            >
+              <LogoutIcon />
+              Logout
+            </button>
           </nav>
         </div>
       </div>
