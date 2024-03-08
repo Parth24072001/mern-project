@@ -5,31 +5,22 @@ import { Login } from "../api";
 import { setItemInCookie } from "../../../shared/helpers/utils";
 
 const useLogin = () => {
-    const navigate = useNavigate();
-    return useMutation((data) => Login(data), {
-        onSuccess: (response) => {
-            setItemInCookie(
-                "accessToken",
-                `${response?.data?.data?.accessToken}`
-            );
-            setItemInCookie(
-                "refreshToken",
-                `${response?.data?.data?.refreshToken}`
-            );
+  const navigate = useNavigate();
+  return useMutation((data) => Login(data), {
+    onSuccess: (response) => {
+      setItemInCookie("accessToken", `${response?.data?.data?.accessToken}`);
+      setItemInCookie("refreshToken", `${response?.data?.data?.refreshToken}`);
 
-            toast("Login successful!", {
-                type: "success",
-            });
-            navigate("/dashboard");
-            return response;
-        },
-        onError: (error) => {
-            toast("Something Went Wrong", {
-                type: "error",
-            });
-            console.log(error);
-        },
-    });
+      navigate("/dashboard");
+      return response;
+    },
+    onError: (error) => {
+      toast("Something Went Wrong", {
+        type: "error",
+      });
+      console.log(error);
+    },
+  });
 };
 
 export default useLogin;

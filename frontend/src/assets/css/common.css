@@ -1,6 +1,19 @@
-body{
-  margin: auto;
+
+
+body {
+  @apply box-border w-full m-0 text-aurometalaaurus ;
+  font-family: "Inter-Regular";
 }
+
+::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+}
+
 input:disabled{
   @apply  bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500
 }
@@ -27,4 +40,7 @@ input:disabled{
 }
 .sidebarListActive svg path {
   stroke: #6b7280 !important;
+}
+.sidebarList svg{
+  @apply h-[24px] w-[24px]
 }
