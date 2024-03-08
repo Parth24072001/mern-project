@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
+import { useTheme } from "../TheamProvider";
 
 const DarkModeSwitch = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { setTheme } = useTheme();
+
+  const [isDarkMode, setIsDarkMode] = useState("light");
 
   const handleCheckboxChange = () => {
-    setIsDarkMode((prevState) => !prevState);
+    setIsDarkMode(isDarkMode === "light" ? "dark" : "light");
+    localStorage.setItem("Mode", isDarkMode);
     document.body.classList.toggle("dark");
+    setTheme(isDarkMode);
   };
 
   return (
@@ -15,7 +20,6 @@ const DarkModeSwitch = () => {
         type="checkbox"
         className="checkbox"
         id="checkbox"
-        checked={isDarkMode}
         onChange={handleCheckboxChange}
       />
       <label htmlFor="checkbox" className="checkbox-label">
@@ -23,9 +27,6 @@ const DarkModeSwitch = () => {
         <FaSun className="fas fa-sun" />
         <span className="ball"></span>
       </label>
-      <div className={isDarkMode ? "dark" : ""}>
-        {/* Your content goes here */}
-      </div>
     </div>
   );
 };

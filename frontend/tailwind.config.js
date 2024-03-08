@@ -1,11 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
-
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
         aurometalaaurus: "#6B7280",
+        dark: "#292c35",
         darkred: "#DC2626",
       },
       screens: {

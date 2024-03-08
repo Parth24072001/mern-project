@@ -9,8 +9,19 @@ import { useEffect } from "react";
 import { getItemFromCookie, setItemInCookie } from "./shared/helpers/utils";
 import { ACCESSTOKEN, REFRESHTOKEN } from "./shared/helpers/constant";
 import { rereshToken } from "./shared/api";
+import { ThemeProvider } from "./shared/components/TheamProvider";
 
 function App() {
+  const storedItem = localStorage.getItem("Mode");
+
+  useEffect(() => {
+    if (localStorage.getItem("Mode")) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, []);
+
   const UnAuthenticated = () => <Outlet />;
   useEffect(() => {
     const fetchData = async () => {
@@ -38,15 +49,17 @@ function App() {
 
   return (
     <>
-      <Routes>
-        <Route path="/*" element={withAuthentication(Home)}>
-          <Route index element={<Navigate to={"/"} />} />
-        </Route>
-        <Route path="" element={withoutAuthentication(UnAuthenticated)}>
-          <Route path="login" index element={<Login />} />
-          <Route path="signup" index element={<Signup />} />
-        </Route>
-      </Routes>
+      <ThemeProvider defaultTheme="dark" storageKey={storedItem}>
+        <Routes>
+          <Route path="/*" element={withAuthentication(Home)}>
+            <Route index element={<Navigate to={"/"} />} />
+          </Route>
+          <Route path="" element={withoutAuthentication(UnAuthenticated)}>
+            <Route path="login" index element={<Login />} />
+            <Route path="signup" index element={<Signup />} />
+          </Route>
+        </Routes>
+      </ThemeProvider>
     </>
   );
 }

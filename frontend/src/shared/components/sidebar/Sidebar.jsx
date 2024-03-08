@@ -48,7 +48,7 @@ function Sidebar({ setSidebarOpen, sidebarOpen }) {
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-50"
+          className="relative z-50 "
           onClose={() => setSidebarOpen(false)}
         >
           <Transition.Child
@@ -132,8 +132,8 @@ function Sidebar({ setSidebarOpen, sidebarOpen }) {
         </Dialog>
       </Transition.Root>
 
-      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-        <div className="sidebarContent border-r border-gray-200 bg-white ">
+      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col ">
+        <div className="sidebarContent border-r border-gray-200 bg-white dark:bg-dark  ">
           <nav className="flex flex-1 flex-col mt-[63px]">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>

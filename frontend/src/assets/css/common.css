@@ -14,27 +14,16 @@ body {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 0.5rem;
 }
-
-
-
-/* dark mode switch design  */
-
 body {
-
+@apply dark:bg-dark;
   background-color: #fff;
   text-align: center;
-  transition: background 0.2s linear;
+  height: 100vh;
 }
-
-body.dark {background-color: #292c35;} /* #9b59b6 */
-
-body.dark h1, body.dark .support a {color: #fff;}
-
 .checkbox {
   opacity: 0;
   position: absolute;
 }
-
 .checkbox-label {
   background-color: #111;
   width: 50px;
@@ -66,16 +55,6 @@ body.dark h1, body.dark .support a {color: #fff;}
 .checkbox:checked + .checkbox-label .ball {
   transform: translateX(24px);
 }
-
-
-
-
-
-
-
-
-
-
 
 input:disabled{
   @apply  bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500

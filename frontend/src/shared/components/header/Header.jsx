@@ -21,10 +21,10 @@ function Header({ setSidebarOpen, width }) {
 
   return (
     <>
-      <div className={clsx(styles.header)}>
+      <div className={clsx(styles.header, "dark:bg-dark")}>
         <button
           type="button"
-          className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+          className="-m-2.5 p-2.5 text-gray-700 lg:hidden "
           onClick={() => setSidebarOpen(true)}
         >
           <div className="svg_icon">

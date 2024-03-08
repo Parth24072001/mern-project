@@ -8,24 +8,24 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            refetchOnWindowFocus: false,
-            retry: 0,
-            onError: (e) => {
-                console.log(e);
-            },
-        },
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 0,
+      onError: (e) => {
+        console.log(e);
+      },
     },
+  },
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <Router>
-            <QueryClientProvider client={queryClient}>
-                <App />
-            </QueryClientProvider>
-        </Router>
-        <ToastContainer />
-    </React.StrictMode>
+  <React.StrictMode>
+    <Router>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </Router>
+    <ToastContainer />
+  </React.StrictMode>
 );
