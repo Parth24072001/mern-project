@@ -30,6 +30,12 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required"],
     },
+    inviteBy: {
+      type: String,
+      required: false,
+      trim: true,
+      index: true,
+    },
     refreshToken: {
       type: String,
     },

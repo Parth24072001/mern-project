@@ -8,6 +8,7 @@ import NotificationIcon from "../../../assets/images/icons/bell-dot.svg?react";
 import MenuIcon from "../../../assets/images/icons/menu.svg?react";
 
 import { useNavigate } from "react-router-dom";
+import DarkModeSwitch from "../DarkModeSwitch/DarkModeSwitch";
 
 function Header({ setSidebarOpen, width }) {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ function Header({ setSidebarOpen, width }) {
 
         <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 justify-end ">
           <div className="flex items-center gap-5 ">
+            <DarkModeSwitch />
             <button onClick={() => navigate("/")}>
               <QrIcon />
             </button>

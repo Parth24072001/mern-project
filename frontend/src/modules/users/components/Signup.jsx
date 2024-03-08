@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useSignUp from "../hooks/useSignUp";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TogglePasswordVisibilityButton from "../../../shared/components/TogglePasswordVisibilityButton/TogglePasswordVisibilityButton";
 
 const Signup = () => {
@@ -12,12 +12,16 @@ const Signup = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
     signUpMutation(data);
   };
+  useEffect(() => {
+    setValue("inviteBy", null);
+  }, []);
 
   return (
     <div>
