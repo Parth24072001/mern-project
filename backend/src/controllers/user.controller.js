@@ -34,7 +34,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // check for user creation
   // return res
 
-  const { fullName, email, username, password } = req.body;
+  const { fullName, email, username, password, inviteBy } = req.body;
 
   if (
     [fullName, email, username, password].some((field) => field?.trim() === "")
@@ -54,6 +54,7 @@ const registerUser = asyncHandler(async (req, res) => {
     fullName,
     email,
     password,
+    inviteBy,
     username: username?.toLowerCase(),
   });
 
@@ -226,9 +227,22 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 });
 
 const getCurrentUser = asyncHandler(async (req, res) => {
-  return res
-    .status(200)
-    .json(new ApiResponse(200, req.user, "User fetched successfully"));
+  const invited = await User.aggregate([
+    {
+      $match: {
+        username: { $ne: req.user?.username }, // Match documents where the username is not the same as the provided username
+        inviteBy: req.user?.username, // Match the inviteBy field with the provided username
+      },
+    },
+  ]);
+  const currentUserData = req.user.toObject(); // Assuming req.user contains the current user's data
+  return res.status(200).json({
+    status: 200,
+
+    data: { ...currentUserData, invited: invited?.length }, // Spread currentUserData object
+
+    message: "User fetched successfully",
+  });
 });
 
 const updateAccountDetails = asyncHandler(async (req, res) => {

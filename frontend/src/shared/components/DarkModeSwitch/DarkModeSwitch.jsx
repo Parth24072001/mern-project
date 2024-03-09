@@ -1,19 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { useTheme } from "../TheamProvider";
 
 const DarkModeSwitch = () => {
-  const { setTheme } = useTheme();
 
-  const [isDarkMode, setIsDarkMode] = useState("light");
+  const { setTheme } = useTheme();
+  const storedItem = localStorage.getItem("Mode");
+
+  const [isDarkMode, setIsDarkMode] = useState(storedItem === "dark");
+
+  useEffect(() => {
+    document.body.classList.toggle("dark", isDarkMode);
+    setTheme(isDarkMode ? "dark" : "light");
+    localStorage.setItem("Mode", isDarkMode ? "dark" : "light");
+  }, [isDarkMode, setTheme]);
 
   const handleCheckboxChange = () => {
-    setIsDarkMode(isDarkMode === "light" ? "dark" : "light");
-    localStorage.setItem("Mode", isDarkMode);
-    document.body.classList.toggle("dark");
-    setTheme(isDarkMode);
+    setIsDarkMode(prevMode => !prevMode);
   };
-
   return (
     <div>
       <input

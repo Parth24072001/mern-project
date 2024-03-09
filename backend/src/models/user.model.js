@@ -33,10 +33,11 @@ const userSchema = new Schema(
     inviteBy: {
       type: String,
       required: false,
-      trim: true,
-      index: true,
     },
     refreshToken: {
+      type: String,
+    },
+    invite_link: {
       type: String,
     },
   },
@@ -47,6 +48,7 @@ const userSchema = new Schema(
 );
 
 userSchema.pre("save", async function (next) {
+  this.invite_link = `https://frontend.parthposhiya.xyz/${this.username}/signup`;
   if (!this.isModified("password")) return next();
 
   this.password = await bcrypt.hash(this.password, 10);

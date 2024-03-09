@@ -5,6 +5,7 @@ import useUpdateUser from "../hooks/useUpdateUser";
 import useDeleteAccount from "../hooks/useDeleteAccount";
 import BackIcon from "../../../assets/images/icons/arrowright.svg?react";
 import { useNavigate } from "react-router-dom";
+import { omit } from "lodash";
 
 const Profile = () => {
   const { data: userInfo, refetch } = useUserInfo();
@@ -13,19 +14,23 @@ const Profile = () => {
   const { handleSubmit, control, setValue } = useForm();
 
   const navigate = useNavigate();
-
   useEffect(() => {
     // Set initial values based on API response
     if (userInfo) {
       setValue("username", userInfo?.data?.data.username);
       setValue("fullName", userInfo?.data?.data.fullName);
       setValue("email", userInfo?.data?.data.email);
+      setValue("invite_link", userInfo?.data?.data.invite_link);
+      setValue("invited", userInfo?.data?.data.invited);
+
+      
+
     }
   }, [userInfo, setValue]);
 
   const onSubmit = (data) => {
-    // console.log(data);
-    UpdateDetails(data, refetch);
+    const updatedData = omit(data, ["invite_link", "invited"]);
+    UpdateDetails(updatedData, refetch);
   };
 
   return (
@@ -116,7 +121,56 @@ const Profile = () => {
                       )}
                     />
                   </div>
+                
 
+              
+                </div>
+              </div>
+
+              <div className="mb-2 sm:mb-6">
+                    <label
+                      htmlFor="text"
+                      className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"
+                    >
+                      Invite Link
+                    </label>
+                    <Controller
+                      name="invite_link"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                        disabled={true}
+                          {...field}
+                          type="text"
+                          id="invite_link"
+                          className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                            required
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="mb-2 sm:mb-6">
+                    <label
+                      htmlFor="text"
+                      className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"
+                    >
+                      Invite Count
+                    </label>
+                    <Controller
+                      name="invited"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                        disabled={true}
+                          {...field}
+                          type="text"
+                          id="invited"
+                          className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                            required
+                        />
+                      )}
+                    />
+                  </div>
                   <div className="flex justify-end">
                     <button
                       type="submit"
@@ -125,9 +179,10 @@ const Profile = () => {
                       Update
                     </button>
                   </div>
-                </div>
-              </div>
             </form>
+            
+          
+
             <div className="flex justify-end mt-3">
               <button
                 type="button"

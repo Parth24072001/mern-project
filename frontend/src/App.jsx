@@ -16,9 +16,9 @@ function App() {
 
   useEffect(() => {
     if (localStorage.getItem("Mode")) {
-      document.body.classList.add("dark");
+      document.body.classList.add(storedItem);
     } else {
-      document.body.classList.remove("dark");
+      document.body.classList.remove("light");
     }
   }, []);
 
@@ -57,6 +57,8 @@ function App() {
           <Route path="" element={withoutAuthentication(UnAuthenticated)}>
             <Route path="login" index element={<Login />} />
             <Route path="signup" index element={<Signup />} />
+            <Route path=":invite_id/signup" index element={<Signup />} />
+
           </Route>
         </Routes>
       </ThemeProvider>

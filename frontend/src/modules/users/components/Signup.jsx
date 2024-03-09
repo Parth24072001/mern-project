@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useSignUp from "../hooks/useSignUp";
 import { useEffect, useState } from "react";
@@ -6,6 +6,9 @@ import TogglePasswordVisibilityButton from "../../../shared/components/TogglePas
 
 const Signup = () => {
   const { mutate: signUpMutation } = useSignUp();
+
+  const {invite_id}=useParams()
+
 
   const [passwordShown, setPasswordShown] = useState(false);
 
@@ -20,8 +23,8 @@ const Signup = () => {
     signUpMutation(data);
   };
   useEffect(() => {
-    setValue("inviteBy", null);
-  }, []);
+    setValue("inviteBy", invite_id);
+  }, [invite_id]);
 
   return (
     <div>
