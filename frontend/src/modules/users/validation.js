@@ -19,3 +19,8 @@ export const ProfileSchema = Yup.object().shape({
   invite_link: Yup.string().required("invite_link is required."),
   invited: Yup.string().required("invited is required."),
 });
+
+export const ChangePasswordSchema = Yup.object().shape({
+  oldPassword: Yup.string().required("oldPassword is required."),
+  newPassword: Yup.string().required("newPassword is required."),
+});

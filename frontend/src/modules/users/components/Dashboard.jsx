@@ -1,35 +1,18 @@
-import { useForm } from "react-hook-form";
-import useCreateExpence from "../hooks/useCreateExpence";
-import useUserInfo from "../hooks/useUserInfo";
-import { useEffect } from "react";
+// import useCreateExpence from "../hooks/useCreateExpence";
+// import useUserInfo from "../hooks/useUserInfo";
+// import { useEffect } from "react";
+import useGetExpence from "../hooks/useGetExpence";
 
 const Dashboard = () => {
-  const { data: userInfo } = useUserInfo();
-  const { mutate: CreateExpence } = useCreateExpence();
-  const { handleSubmit, setValue } = useForm();
+  // const { data: userInfo } = useUserInfo();
+  const { data: expence } = useGetExpence("8758789147");
 
-  useEffect(() => {
-    // Set initial values based on API response
-    if (userInfo) {
+  // const { mutate: CreateExpence } = useCreateExpence();
 
-
-      setValue("expence_createdBy", userInfo?.data?.data.username);
-      setValue("expence_title", userInfo?.data?.data.fullName);
-      setValue("expence_type", userInfo?.data?.data.email);
-      setValue("expence_category", userInfo?.data?.data.invite_link);
-      setValue("expence_money", userInfo?.data?.data.invited);
-    }
-  }, [userInfo, setValue]);
-
-
-  const onSubmit = (data) => {
-    CreateExpence(data);
-  };
+  console.log(expence);
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <button type="submit">Click me</button>
-      </form>
+      <button type="submit">Click me</button>
     </div>
   );
 };

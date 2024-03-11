@@ -45,60 +45,30 @@ const createExpence = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(200, expence, "Expence created Successfully"));
 });
+const getExpence = asyncHandler(async (req, res) => {
+  const pageNumber = req.query.page || 1; // Get the current page number from the query parameters
+  const startIndex = (pageNumber - 1) * 10;
+  const endIndex = startIndex + 10;
+  const { expenseId } = req.params;
 
-// const getCurrentUser = asyncHandler(async (req, res) => {
-//   const invited = await User.aggregate([
-//     {
-//       $match: {
-//         username: { $ne: req.user?.username }, // Match documents where the username is not the same as the provided username
-//         inviteBy: req.user?.username, // Match the inviteBy field with the provided username
-//       },
-//     },
-//   ]);
-//   const currentUserData = req.user.toObject(); // Assuming req.user contains the current user's data
-//   return res.status(200).json({
-//     status: 200,
+  const expences = await Expence.find({ expence_createdBy: expenseId });
 
-//     data: { ...currentUserData, invited: invited?.length }, // Spread currentUserData object
+  if (!expences || expences.length === 0) {
+    throw new ApiError(404, "No expenses found for the given user ID");
+  }
 
-//     message: "User fetched successfully",
-//   });
-// });
+  return res.status(200).json({
+    status: 200,
+    data: {
+      expences: expences
+        .map((expence) => expence.toObject())
+        .slice(startIndex, endIndex),
+      TotalPage: Math.ceil(
+        expences.map((expence) => expence.toObject()).length / 10
+      ),
+    },
+    message: "Expenses fetched successfully",
+  });
+});
 
-// const updateAccountDetails = asyncHandler(async (req, res) => {
-//   const { fullName, email } = req.body;
-
-//   if (!fullName || !email) {
-//     throw new ApiError(400, "All fields are required");
-//   }
-
-//   const user = await User.findByIdAndUpdate(
-//     req.user?._id,
-//     {
-//       $set: {
-//         fullName,
-//         email: email,
-//       },
-//     },
-//     { new: true }
-//   ).select("-password");
-
-//   return res
-//     .status(200)
-//     .json(new ApiResponse(200, user, "Account details updated successfully"));
-// });
-
-// const deleteAccount = asyncHandler(async (req, res) => {
-//   // You might want to prompt the user for confirmation before proceeding with deletion
-//   const user = await User.findByIdAndDelete(req.user?._id);
-
-//   if (!user) {
-//     throw new ApiError(404, "User not found");
-//   }
-
-//   return res
-//     .status(200)
-//     .json(new ApiResponse(200, null, "Account deleted successfully"));
-// });
-
-export { createExpence };
+export { createExpence, getExpence };

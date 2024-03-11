@@ -1,13 +1,11 @@
-import { useForm, Controller } from "react-hook-form";
 import useChangePassword from "../hooks/useChangePassword";
+import { useUpdatePasswordForm } from "../hooks/useUpdatePasswordForm";
 
 const ChangePassword = () => {
-  const { control, handleSubmit } = useForm();
   const { mutate: PasswordChange } = useChangePassword();
 
-  const onSubmit = (data) => {
-    PasswordChange(data);
-  };
+  const { handleChange, handleSubmit, errors, values } =
+    useUpdatePasswordForm(PasswordChange);
 
   return (
     <div>
@@ -18,7 +16,7 @@ const ChangePassword = () => {
               Change Password
             </h2>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit}>
               <div className="grid max-w-2xl mx-auto mt-8">
                 <div className="items-center mt-8 sm:mt-14 text-[#202142]">
                   <div className="mb-2 sm:mb-6">
@@ -28,20 +26,23 @@ const ChangePassword = () => {
                     >
                       Old Password
                     </label>
-                    <Controller
-                      name="oldPassword"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="password"
-                          id="oldPassword"
-                          className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
-                          placeholder="Old Password"
-                          required
-                        />
-                      )}
+
+                    <input
+                      type="password"
+                      id="oldPassword"
+                      onChange={handleChange}
+                      value={values.oldPassword}
+                      className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                      placeholder="Old Password"
+                      required
                     />
+                    {errors.oldPassword ? (
+                      <span className="text-xs text-red-500 pl-1">
+                        {errors.oldPassword}
+                      </span>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="mb-2 sm:mb-6">
                     <label
@@ -50,20 +51,23 @@ const ChangePassword = () => {
                     >
                       New Password
                     </label>
-                    <Controller
-                      name="newPassword"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="password"
-                          id="newPassword"
-                          className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
-                          placeholder="New Password"
-                          required
-                        />
-                      )}
+
+                    <input
+                      type="password"
+                      id="newPassword"
+                      onChange={handleChange}
+                      value={values.newPassword}
+                      className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5"
+                      placeholder="New Password"
+                      required
                     />
+                    {errors.newPassword ? (
+                      <span className="text-xs text-red-500 pl-1">
+                        {errors.newPassword}
+                      </span>
+                    ) : (
+                      ""
+                    )}
                   </div>
 
                   <div className="flex justify-end">
