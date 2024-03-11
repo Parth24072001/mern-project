@@ -1,23 +1,16 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
+
 import useLogin from "../hooks/useLogin";
 import TogglePasswordVisibilityButton from "../../../shared/components/TogglePasswordVisibilityButton/TogglePasswordVisibilityButton";
-import { useState } from "react";
+import { useLoginForm } from "../hooks/useLoginForm";
 
 const Login = () => {
   const { mutate: LoginMutation } = useLogin();
   const [passwordShown, setPasswordShown] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = (data) => {
-    // Handle login logic with the form data
-    LoginMutation(data);
-  };
+  const { handleChange, handleSubmit, errors, values } =
+    useLoginForm(LoginMutation);
 
   return (
     <div>
@@ -30,7 +23,7 @@ const Login = () => {
           </Link>
         </div>
         <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-lg sm:rounded-lg">
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit}>
             <div className="mt-4">
               <label
                 htmlFor="username"
@@ -41,21 +34,23 @@ const Login = () => {
               <div className="flex flex-col items-start">
                 <input
                   type="text"
-                  {...register("username", {
-                    required: "Username is required",
-                  })}
+                  name="username"
+                  onChange={handleChange}
+                  value={values.username}
                   className={`bg-gray-50 border ${
                     errors.username ? "border-red-500" : "border-gray-300"
                   } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                 />
-                {errors.username && (
-                  <span className="text-red-500 text-xs mt-1">
-                    {errors.username.message}
+                {errors.username ? (
+                  <span className="text-xs text-red-500 pl-1">
+                    {errors.username}
                   </span>
+                ) : (
+                  ""
                 )}
               </div>
             </div>
-            <div className="mt-4 ">
+            <div className="mt-4">
               <label
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
@@ -65,9 +60,9 @@ const Login = () => {
               <div className="flex flex-col items-start relative">
                 <input
                   type={passwordShown ? "text" : "password"}
-                  {...register("password", {
-                    required: "Password is required",
-                  })}
+                  name="password"
+                  onChange={handleChange}
+                  value={values.password}
                   className={`bg-gray-50 border ${
                     errors.password ? "border-red-500" : "border-gray-300"
                   } text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
@@ -78,10 +73,12 @@ const Login = () => {
                     setPasswordShown(!passwordShown)
                   }
                 />
-                {errors.password && (
-                  <span className="text-red-500 text-xs mt-1">
-                    {errors.password.message}
+                {errors.password ? (
+                  <span className="text-xs text-red-500 pl-1">
+                    {errors.password}
                   </span>
+                ) : (
+                  ""
                 )}
               </div>
             </div>

@@ -1,29 +1,21 @@
 import { Link, useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import useSignUp from "../hooks/useSignUp";
 import { useEffect, useState } from "react";
 import TogglePasswordVisibilityButton from "../../../shared/components/TogglePasswordVisibilityButton/TogglePasswordVisibilityButton";
+import { useSignUpForm } from "../hooks/useSignUpForm";
 
 const Signup = () => {
   const { mutate: signUpMutation } = useSignUp();
 
-  const {invite_id}=useParams()
-
+  const { invite_id } = useParams();
 
   const [passwordShown, setPasswordShown] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm();
+  const { handleChange, handleSubmit, errors, setFieldValue, values } =
+    useSignUpForm(signUpMutation);
 
-  const onSubmit = (data) => {
-    signUpMutation(data);
-  };
   useEffect(() => {
-    setValue("inviteBy", invite_id);
+    setFieldValue("inviteBy", invite_id);
   }, [invite_id]);
 
   return (
@@ -38,7 +30,7 @@ const Signup = () => {
             </Link>
           </div>
           <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-md sm:rounded-lg">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="fullName"
@@ -51,9 +43,8 @@ const Signup = () => {
                     type="text"
                     name="username"
                     id="username"
-                    {...register("username", {
-                      required: "Username is required",
-                    })}
+                    onChange={handleChange}
+                    value={values.username}
                     className={`bg-gray-50 border ${
                       errors.username ? "border-red-500" : "border-gray-300"
                     } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-2`}
@@ -77,9 +68,8 @@ const Signup = () => {
                     type="text"
                     name="fullName"
                     id="fullName"
-                    {...register("fullName", {
-                      required: "fullName is required",
-                    })}
+                    onChange={handleChange}
+                    value={values.fullName}
                     className={`bg-gray-50 border ${
                       errors.name ? "border-red-500" : "border-gray-300"
                     } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-2`}
@@ -103,9 +93,8 @@ const Signup = () => {
                     type="email"
                     name="email"
                     id="email"
-                    {...register("email", {
-                      required: "Email is required",
-                    })}
+                    onChange={handleChange}
+                    value={values.email}
                     className={`bg-gray-50 border ${
                       errors.email ? "border-red-500" : "border-gray-300"
                     } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-2`}
@@ -129,9 +118,8 @@ const Signup = () => {
                     type={passwordShown ? "text" : "password"}
                     name="password"
                     id="password"
-                    {...register("password", {
-                      required: "Password is required",
-                    })}
+                    onChange={handleChange}
+                    value={values.password}
                     className={`bg-gray-50 border ${
                       errors.password ? "border-red-500" : "border-gray-300"
                     } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-2`}
