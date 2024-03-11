@@ -1,7 +1,9 @@
 // import useCreateExpence from "../hooks/useCreateExpence";
 // import useUserInfo from "../hooks/useUserInfo";
 // import { useEffect } from "react";
+import ModalPortal from "../../../shared/components/modal-portal/ModalPortal";
 import useGetExpence from "../hooks/useGetExpence";
+import ConfirmationModal from "./ConforMationModal";
 
 const Dashboard = () => {
   // const { data: userInfo } = useUserInfo();
@@ -13,6 +15,9 @@ const Dashboard = () => {
   return (
     <div>
       <button type="submit">Click me</button>
+      <ModalPortal open={false}>
+        <ConfirmationModal />
+      </ModalPortal>
     </div>
   );
 };
