@@ -9,7 +9,6 @@ import { capitalizeWords } from "../../../shared/helpers/utils";
 const Dashboard = () => {
   const { data: expence, isLoading, isFetching } = useGetExpence();
   const [openModel, setOpenModel] = useState(false);
-  console.log(expence);
 
   if (isLoading || isFetching) {
     return (
