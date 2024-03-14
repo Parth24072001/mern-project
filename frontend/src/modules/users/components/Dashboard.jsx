@@ -1,6 +1,7 @@
 // import useCreateExpence from "../hooks/useCreateExpence";
 // import useUserInfo from "../hooks/useUserInfo";
 // import { useEffect } from "react";
+import { Button } from "../../../shared/components/common-button/Button";
 import ModalPortal from "../../../shared/components/modal-portal/ModalPortal";
 import useGetExpence from "../hooks/useGetExpence";
 import ConfirmationModal from "./ConforMationModal";
@@ -14,7 +15,9 @@ const Dashboard = () => {
   console.log(expence);
   return (
     <div>
-      <button type="submit">Click me</button>
+      <div className="flex justify-end items-center">
+        <Button variant={"default"}>Archive</Button>
+      </div>
       <ModalPortal open={false}>
         <ConfirmationModal />
       </ModalPortal>
