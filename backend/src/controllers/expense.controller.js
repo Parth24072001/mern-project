@@ -1,20 +1,16 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { Expence } from "../models/expense.model.js";
-import { User } from "../models/user.model.js";
+
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { User } from "../models/user.model.js";
 
 const createExpence = asyncHandler(async (req, res) => {
-  const {
-    expence_title,
-    expence_type,
-    expence_category,
-    expence_money,
-    expence_createdBy,
-  } = req.body;
-
+  const { expence_title, expence_type, expence_category, expence_money } =
+    req.body;
+  const expence_createdBy = req.user._id;
   if (
-    [expence_title, expence_type, expence_category, expence_createdBy].some(
+    [expence_title, expence_type, expence_category].some(
       (field) => field?.trim() === ""
     )
   ) {
@@ -45,11 +41,12 @@ const createExpence = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(200, expence, "Expence created Successfully"));
 });
+
 const getExpence = asyncHandler(async (req, res) => {
   const pageNumber = req.query.page || 1; // Get the current page number from the query parameters
   const startIndex = (pageNumber - 1) * 10;
   const endIndex = startIndex + 10;
-  const { expenseId } = req.params;
+  const expenseId = req.user?._id;
 
   const expences = await Expence.find({ expence_createdBy: expenseId });
 

@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 
 import { clsx } from "clsx";
@@ -14,7 +13,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-red-500 text-primary-foreground hover:bg-primary/90",
+        default: "bg-aurometalaaurus text-white hover:bg-primary/90 p-2",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
@@ -39,17 +38,17 @@ const buttonVariants = cva(
 );
 
 const Button = React.forwardRef(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
+  ({ className, variant, children, size = false, ...props }, ref) => {
     return (
-      <Comp
+      <button
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
-        {...props}
-      />
+        {...props} // Spread props directly here
+      >
+        {children}
+      </button>
     );
   }
 );
 Button.displayName = "Button";
-
 export { Button, buttonVariants };

@@ -22,6 +22,6 @@ export const DeleteAccount = (data) => {
 export const CreateExpence = (data) => {
   return api.post(`expence/create-expence`, data);
 };
-export const getExpence = (id) => {
-  return api.post(`expence/get-expence/${id}`);
+export const getExpence = () => {
+  return api.post(`expence/get-expence`);
 };

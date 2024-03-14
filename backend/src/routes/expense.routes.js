@@ -11,7 +11,7 @@ const router = Router();
 //secured routes
 router.route("/create-expence").post(verifyJWT, createExpence);
 router
-  .route("/get-expence/:expenseId")
+  .route("/get-expence")
   .post(verifyJWT, paginationMiddleware(10), getExpence);
 
 export default router;
