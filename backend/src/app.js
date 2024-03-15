@@ -30,11 +30,13 @@ app.use(cookieParser());
 //routes import
 import userRouter from "./routes/user.routes.js";
 import expenceRouter from "./routes/expense.routes.js";
+// import archieveRouter from "./routes/archieve.routes.js";
 
 //routes declaration
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/expence", expenceRouter);
+// app.use("/api/v1/archieve", archieveRouter);
 
 // http://localhost:8000/api/v1/users/register
 

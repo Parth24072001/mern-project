@@ -86,6 +86,7 @@ const ExpenceDataListing = ({
                               <EditIcon />
                             </button>
                             <button
+                              // onClick={() => DeleteExpences(data)}
                               onClick={() => DeleteExpences(data?._id)}
                               className=" cursor-pointer button_hover"
                             >

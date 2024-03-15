@@ -26,5 +26,9 @@ export const getExpence = (pageIndex) => {
   return api.post(`expence/get-expence/${pageIndex}`);
 };
 export const DeleteExpences = (id) => {
-  return api.delete(`expence/delete-expence/${id}`);
+  return api.post(`archieve/archieve-expence/${id}`);
 };
+
+// export const DeleteExpences = (id) => {
+//   return api.post(`archieve/archieve-expence`, id);
+// };
