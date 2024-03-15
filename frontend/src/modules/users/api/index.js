@@ -25,10 +25,19 @@ export const CreateExpence = (data) => {
 export const getExpence = (pageIndex) => {
   return api.post(`expence/get-expence/${pageIndex}`);
 };
-export const DeleteExpences = (id) => {
-  return api.post(`archieve/archieve-expence/${id}`);
+
+export const getArchiveExpence = (pageIndex) => {
+  return api.post(`expence/get-archive-expence/${pageIndex}`);
 };
 
-// export const DeleteExpences = (id) => {
-//   return api.post(`archieve/archieve-expence`, id);
-// };
+export const ArchiveExpences = (id) => {
+  return api.post(`expence/archive-expence/${id}`);
+};
+
+export const RestoreExpences = (id) => {
+  return api.post(`expence/restore-expence/${id}`);
+};
+
+export const DeleteExpences = (id) => {
+  return api.delete(`expence/delete-expence/${id}`);
+};

@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { DeleteExpences } from "../api";
+import { ArchiveExpences } from "../api";
 
-const useDeleteExpence = (refetch) => {
-  return useMutation((data) => DeleteExpences(data), {
+const useArchiveExpence = (refetch) => {
+  return useMutation((data) => ArchiveExpences(data), {
     onSuccess: (response) => {
-      toast("Expences delete successful!", {
+      toast("Expences archive successful!", {
         type: "success",
       });
       refetch();
@@ -21,4 +21,4 @@ const useDeleteExpence = (refetch) => {
   });
 };
 
-export default useDeleteExpence;
+export default useArchiveExpence;

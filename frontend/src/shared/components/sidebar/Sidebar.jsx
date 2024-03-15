@@ -2,6 +2,8 @@ import clsx from "clsx";
 import ProfileIcon from "../../../assets/images/icons/Home.svg?react";
 import SplitIcon from "../../../assets/images/icons/split.svg?react";
 import SettingsIcon from "../../../assets/images/icons/settings.svg?react";
+import ArchiveIcon from "../../../assets/images/icons/archive.svg?react";
+
 import LogoutIcon from "../../../assets/images/icons/log-out.svg?react";
 
 import CloseIcon from "../../../assets/images/icons/cross-23.svg?react";
@@ -34,6 +36,12 @@ function Sidebar({ setSidebarOpen, sidebarOpen }) {
       href: "/setting",
       icon: SettingsIcon,
       activeMenu: "/setting",
+    },
+    {
+      name: "Archive",
+      href: "/archive",
+      icon: ArchiveIcon,
+      activeMenu: "/archive",
     },
   ];
 

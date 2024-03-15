@@ -1,8 +1,11 @@
 import { Router } from "express";
 import {
   createExpence,
-  deleteExpense,
+  getArchiveExpence,
   getExpence,
+  hardDeleteExpense,
+  restoreExpense,
+  softDeleteExpense,
 } from "../controllers/expense.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { paginationMiddleware } from "../middlewares/pagination.middleware.js";
@@ -15,6 +18,13 @@ router
   .route("/get-expence/:pageindex")
   .post(verifyJWT, paginationMiddleware(10), getExpence);
 
-router.route("/delete-expence/:id").delete(verifyJWT, deleteExpense);
+router.route("/archive-expence/:id").post(verifyJWT, softDeleteExpense);
+router.route("/restore-expence/:id").post(verifyJWT, restoreExpense);
+
+router.route("/delete-expence/:id").delete(verifyJWT, hardDeleteExpense);
+
+router
+  .route("/get-archive-expence/:pageindex")
+  .post(verifyJWT, paginationMiddleware(10), getArchiveExpence);
 
 export default router;

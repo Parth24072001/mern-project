@@ -30,11 +30,19 @@ const expenceSchema = new Schema(
       type: String,
       required: true,
     },
+
+    soft_delete: {
+      type: Boolean,
+    },
   },
   {
     collection: "expences",
     timestamps: true,
   }
 );
+
+expenceSchema.pre("save", async function (next) {
+  next();
+});
 
 export const Expence = mongoose.model("Expence", expenceSchema);

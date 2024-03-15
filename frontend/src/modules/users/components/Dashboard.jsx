@@ -5,7 +5,7 @@ import ModalPortal from "../../../shared/components/modal-portal/ModalPortal";
 import ExpenceDataListing from "./ExpenceDataListing";
 import CreateExpenceModal from "./CreateExpenceModal";
 import useGetExpence from "../hooks/useGetExpence";
-import useDeleteExpence from "../hooks/useDeleteExpence";
+import useArchiveExpence from "../hooks/useArchiveExpence";
 
 const Dashboard = () => {
   const [openModel, setOpenModel] = useState(false);
@@ -17,7 +17,7 @@ const Dashboard = () => {
     isFetching,
     refetch,
   } = useGetExpence(pageIndex);
-  const { mutate: DeleteExpences } = useDeleteExpence(refetch);
+  const { mutate: DeleteExpences } = useArchiveExpence(refetch);
 
   return (
     <div>

@@ -57,8 +57,8 @@ function App() {
           <Route path="" element={withoutAuthentication(UnAuthenticated)}>
             <Route path="login" index element={<Login />} />
             <Route path="signup" index element={<Signup />} />
-            <Route path=":invite_id/signup" index element={<Signup />} />
 
+            <Route path=":invite_id/signup" index element={<Signup />} />
           </Route>
         </Routes>
       </ThemeProvider>
