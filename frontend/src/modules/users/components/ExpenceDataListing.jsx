@@ -5,10 +5,17 @@ import useGetExpence from "../hooks/useGetExpence";
 import Loader from "../../../shared/components/loader/Loader";
 import Pagination from "../../../shared/components/pagination/Pagination";
 import { useState } from "react";
+import useDeleteExpence from "../hooks/useDeleteExpence";
 
 const ExpenceDataListing = () => {
   const [pageIndex, setPageIndex] = useState(1);
-  const { data: expence, isLoading, isFetching } = useGetExpence(pageIndex);
+  const {
+    data: expence,
+    isLoading,
+    isFetching,
+    refetch,
+  } = useGetExpence(pageIndex);
+  const { mutate: DeleteExpences } = useDeleteExpence(refetch);
 
   if (isLoading || isFetching) {
     return (
@@ -84,7 +91,7 @@ const ExpenceDataListing = () => {
                               <EditIcon />
                             </button>
                             <button
-                              // onClick={() => onDelete(data?.register_no)}
+                              onClick={() => DeleteExpences(data?._id)}
                               className=" cursor-pointer button_hover"
                             >
                               <DeleteIcon />

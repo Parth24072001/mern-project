@@ -25,3 +25,6 @@ export const CreateExpence = (data) => {
 export const getExpence = (pageIndex) => {
   return api.post(`expence/get-expence/${pageIndex}`);
 };
+export const DeleteExpences = (id) => {
+  return api.delete(`expence/delete-expence/${id}`);
+};

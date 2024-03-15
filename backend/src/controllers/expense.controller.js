@@ -4,6 +4,7 @@ import { Expence } from "../models/expense.model.js";
 
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.model.js";
+import mongoose from "mongoose";
 
 const createExpence = asyncHandler(async (req, res) => {
   const { expence_title, expence_type, expence_category, expence_money } =
@@ -68,4 +69,34 @@ const getExpence = asyncHandler(async (req, res) => {
   });
 });
 
-export { createExpence, getExpence };
+const deleteExpense = asyncHandler(async (req, res) => {
+  const expenseId = req.params.id;
+
+  if (!mongoose.Types.ObjectId.isValid(expenseId)) {
+    return res
+      .status(400)
+      .json(new ApiResponse(400, null, "Invalid expense ID"));
+  }
+
+  const expense = await Expence.findById(expenseId);
+
+  if (!expense) {
+    return res
+      .status(404)
+      .json(new ApiResponse(404, null, "Expense not found"));
+  }
+
+  const deletedExpense = await Expence.findByIdAndDelete(expenseId);
+
+  if (!deletedExpense) {
+    return res
+      .status(404)
+      .json(new ApiResponse(404, null, "Expense not found"));
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, null, "Expense deleted successfully"));
+});
+
+export { createExpence, getExpence, deleteExpense };
