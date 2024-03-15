@@ -23,5 +23,5 @@ export const CreateExpence = (data) => {
   return api.post(`expence/create-expence`, data);
 };
 export const getExpence = () => {
-  return api.post(`expence/get-expence`);
+  return api.post(`expence/get-expence/1`);
 };

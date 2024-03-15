@@ -43,7 +43,7 @@ const createExpence = asyncHandler(async (req, res) => {
 });
 
 const getExpence = asyncHandler(async (req, res) => {
-  const pageNumber = req.query.page || 1; // Get the current page number from the query parameters
+  const pageNumber = req.params.pageindex || 1;
   const startIndex = (pageNumber - 1) * 10;
   const endIndex = startIndex + 10;
   const expenseId = req.user?._id;

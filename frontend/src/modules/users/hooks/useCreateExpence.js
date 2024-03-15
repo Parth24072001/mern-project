@@ -2,12 +2,13 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { CreateExpence } from "../api";
 
-const useCreateExpence = () => {
+const useCreateExpence = (setOpenModel) => {
   return useMutation((data) => CreateExpence(data), {
     onSuccess: (response) => {
       toast("Expence created successful!", {
         type: "success",
       });
+      setOpenModel(false);
 
       return response;
     },

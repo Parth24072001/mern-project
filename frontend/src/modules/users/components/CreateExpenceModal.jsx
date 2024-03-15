@@ -1,14 +1,14 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import useCreateExpence from "../hooks/useCreateExpence";
 import { useCreateExpenceForm } from "../hooks/useCreateExpenceForm";
 import Select from "react-select";
 import { ExpenceCategory, ExpenceType } from "../../../shared/helpers/utils";
 
-const ConfirmationModal = ({ setOpenModel, openModel }) => {
+const CreateExpenceModal = ({ setOpenModel, openModel }) => {
   const [open, setOpen] = useState(true);
 
-  const { mutate: CreateExpence } = useCreateExpence();
+  const { mutate: CreateExpence } = useCreateExpence(setOpenModel);
 
   const { handleChange, handleSubmit, errors, values, setFieldValue } =
     useCreateExpenceForm(CreateExpence);
@@ -18,10 +18,13 @@ const ConfirmationModal = ({ setOpenModel, openModel }) => {
   };
 
   const handleChangeOption = (field, selectedOption) => {
-    setFieldValue(field, selectedOption.label);
+    setFieldValue(field, selectedOption.value);
   };
+  useEffect(() => {
+    setFieldValue("expence_type", ExpenceType[0]?.value);
+    setFieldValue("expence_category", ExpenceCategory[0]?.value);
+  }, []);
 
-  console.log(values);
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-[90]" onClose={() => null}>
@@ -81,9 +84,7 @@ const ConfirmationModal = ({ setOpenModel, openModel }) => {
                         options={ExpenceType.map((option) => ({
                           ...option,
                         }))}
-                        defaultValue={ExpenceType.map((option) => ({
-                          ...option,
-                        })).find((option) => !option.isDisabled)}
+                        defaultValue={ExpenceType[0]}
                         isSearchable={false}
                       />
                     </div>
@@ -95,16 +96,14 @@ const ConfirmationModal = ({ setOpenModel, openModel }) => {
                           handleChangeOption("expence_category", e)
                         }
                         options={ExpenceCategory}
-                        defaultValue={ExpenceCategory.find(
-                          (option) => !option.isDisabled
-                        )}
+                        defaultValue={ExpenceCategory[0]}
                         isSearchable={false}
                       />
                     </div>
                     <div className="mt-3 text-center  sm:text-left w-full">
                       <label>Amount</label>
                       <input
-                        type="text"
+                        type="number"
                         placeholder="Enter Amount"
                         name="expence_money"
                         onChange={handleChange}
@@ -149,4 +148,4 @@ const ConfirmationModal = ({ setOpenModel, openModel }) => {
   );
 };
 
-export default ConfirmationModal;
+export default CreateExpenceModal;
