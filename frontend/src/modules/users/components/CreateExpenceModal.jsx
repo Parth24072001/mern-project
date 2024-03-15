@@ -5,10 +5,10 @@ import { useCreateExpenceForm } from "../hooks/useCreateExpenceForm";
 import Select from "react-select";
 import { ExpenceCategory, ExpenceType } from "../../../shared/helpers/utils";
 
-const CreateExpenceModal = ({ setOpenModel, openModel }) => {
+const CreateExpenceModal = ({ setOpenModel, openModel, refetch }) => {
   const [open, setOpen] = useState(true);
 
-  const { mutate: CreateExpence } = useCreateExpence(setOpenModel);
+  const { mutate: CreateExpence } = useCreateExpence(setOpenModel, refetch);
 
   const { handleChange, handleSubmit, errors, values, setFieldValue } =
     useCreateExpenceForm(CreateExpence);

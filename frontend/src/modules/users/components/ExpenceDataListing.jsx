@@ -1,22 +1,17 @@
 import { capitalizeWords } from "../../../shared/helpers/utils";
 import EditIcon from "../../../assets/images/icons/edit.svg?react";
 import DeleteIcon from "../../../assets/images/icons/delete.svg?react";
-import useGetExpence from "../hooks/useGetExpence";
 import Loader from "../../../shared/components/loader/Loader";
 import Pagination from "../../../shared/components/pagination/Pagination";
-import { useState } from "react";
-import useDeleteExpence from "../hooks/useDeleteExpence";
 
-const ExpenceDataListing = () => {
-  const [pageIndex, setPageIndex] = useState(1);
-  const {
-    data: expence,
-    isLoading,
-    isFetching,
-    refetch,
-  } = useGetExpence(pageIndex);
-  const { mutate: DeleteExpences } = useDeleteExpence(refetch);
-
+const ExpenceDataListing = ({
+  isLoading,
+  isFetching,
+  expence,
+  pageIndex,
+  setPageIndex,
+  DeleteExpences,
+}) => {
   if (isLoading || isFetching) {
     return (
       <div className="flex justify-center items-center">
