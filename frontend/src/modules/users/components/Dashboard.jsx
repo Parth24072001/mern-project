@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button } from "../../../shared/components/common-button/Button";
 import ModalPortal from "../../../shared/components/modal-portal/ModalPortal";
 
-import Pagination from "../../../shared/components/pagination/Pagination";
 import ExpenceDataListing from "./ExpenceDataListing";
 import CreateExpenceModal from "./CreateExpenceModal";
 
@@ -17,7 +16,7 @@ const Dashboard = () => {
         </Button>
       </div>
       <ExpenceDataListing />
-      <Pagination />
+
       <ModalPortal open={openModel}>
         <CreateExpenceModal setOpenModel={setOpenModel} openModel={openModel} />
       </ModalPortal>

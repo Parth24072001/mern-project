@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getExpence } from "../api";
 import { toast } from "react-toastify";
 
-const useGetExpence = () => {
-  return useQuery(["get-expence"], () => getExpence(), {
+const useGetExpence = (pageIndex) => {
+  return useQuery(["get-expence", pageIndex], () => getExpence(pageIndex), {
     select: (res) => {
-      return res?.data?.data?.expences;
+      return res?.data?.data;
     },
     onError: () => {
       toast("Expence not found", { type: "error" });
