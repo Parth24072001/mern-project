@@ -53,9 +53,9 @@ const getExpence = asyncHandler(async (req, res) => {
 
   const expences = await Expence.find({ expence_createdBy: expenseId });
 
-  if (!expences || expences.length === 0) {
-    throw new ApiError(404, "No expenses found for the given user ID");
-  }
+  // if (!expences || expences.length === 0) {
+  //   throw new ApiError(404, "No expenses found for the given user ID");
+  // }
 
   return res.status(200).json({
     status: 200,
@@ -80,9 +80,9 @@ const getArchiveExpence = asyncHandler(async (req, res) => {
 
   const expences = await Expence.find({ expence_createdBy: expenseId });
 
-  if (!expences || expences.length === 0) {
-    throw new ApiError(404, "No expenses found for the given user ID");
-  }
+  // if (!expences || expences.length === 0) {
+  //   throw new ApiError(404, "No expenses found for the given user ID");
+  // }
 
   return res.status(200).json({
     status: 200,
