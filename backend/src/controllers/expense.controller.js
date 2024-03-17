@@ -32,7 +32,6 @@ const createExpence = asyncHandler(async (req, res) => {
     expence_id = Number(lastExpence.expence_id) + 1;
   }
 
-  console.log(lastExpence);
   const expence = await Expence.create({
     expence_id,
     expence_title,
