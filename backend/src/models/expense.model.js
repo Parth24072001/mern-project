@@ -30,7 +30,10 @@ const expenceSchema = new Schema(
       type: String,
       required: true,
     },
-
+    expence_id: {
+      type: Number,
+      required: true,
+    },
     soft_delete: {
       type: Boolean,
     },

@@ -11,7 +11,14 @@ const ExpenceDataListing = ({
   pageIndex,
   setPageIndex,
   DeleteExpences,
+  seteditOpenModel,
+  editOpenModel,
+  setEditId,
 }) => {
+  const onclickEdit = (id) => {
+    seteditOpenModel(!editOpenModel), setEditId(id);
+  };
+
   if (isLoading || isFetching) {
     return (
       <div className="flex justify-center items-center">
@@ -26,6 +33,9 @@ const ExpenceDataListing = ({
         <table className="tableContent">
           <thead>
             <tr className="bg-blue-50 rounded-lg">
+              <th scope="col" className="!pl-4 !pr-3 tableHeader">
+                expence id
+              </th>
               <th scope="col" className="!pl-4 !pr-3 tableHeader">
                 expence title
               </th>
@@ -59,6 +69,9 @@ const ExpenceDataListing = ({
                   expence?.expences?.map((data, index) => {
                     return (
                       <tr key={index}>
+                        <td className="tableData max-w-[34.375rem] table_description">
+                          {data?.expence_id ? data?.expence_id : "-"}
+                        </td>
                         <td className="!text-blackolive font-medium tableData">
                           {data?.expence_title
                             ? capitalizeWords(data?.expence_title)
@@ -80,7 +93,7 @@ const ExpenceDataListing = ({
                         <td className="tableDetail  border-none">
                           <div className="flex justify-start gap-6 items-center">
                             <button
-                              // onClick={() => onEdit(data?.register_no)}
+                              onClick={() => onclickEdit(data?._id)}
                               className=" cursor-pointer button_hover"
                             >
                               <EditIcon />

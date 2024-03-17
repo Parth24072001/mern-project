@@ -1,8 +1,10 @@
 import { Router } from "express";
 import {
   createExpence,
+  editExpence,
   getArchiveExpence,
   getExpence,
+  getOneExpence,
   hardDeleteExpense,
   restoreExpense,
   softDeleteExpense,
@@ -22,6 +24,8 @@ router.route("/archive-expence/:id").post(verifyJWT, softDeleteExpense);
 router.route("/restore-expence/:id").post(verifyJWT, restoreExpense);
 
 router.route("/delete-expence/:id").delete(verifyJWT, hardDeleteExpense);
+router.route("/get-expence-by-id/:id").get(verifyJWT, getOneExpence);
+router.route("/edit-expence/:id").patch(verifyJWT, editExpence);
 
 router
   .route("/get-archive-expence/:pageindex")

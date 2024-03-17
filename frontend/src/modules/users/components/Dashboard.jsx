@@ -6,9 +6,13 @@ import ExpenceDataListing from "./ExpenceDataListing";
 import CreateExpenceModal from "./CreateExpenceModal";
 import useGetExpence from "../hooks/useGetExpence";
 import useArchiveExpence from "../hooks/useArchiveExpence";
+import EditExpenceModal from "./EditExpenceModal";
 
 const Dashboard = () => {
-  const [openModel, setOpenModel] = useState(false);
+  const [createOpenModel, setcreateOpenModel] = useState(false);
+  const [editOpenModel, seteditOpenModel] = useState(false);
+  const [editId, setEditId] = useState(null);
+
   const [pageIndex, setPageIndex] = useState(1);
 
   const {
@@ -22,7 +26,10 @@ const Dashboard = () => {
   return (
     <div>
       <div className="flex justify-end items-center mb-3">
-        <Button variant={"default"} onClick={() => setOpenModel(!openModel)}>
+        <Button
+          variant={"default"}
+          onClick={() => setcreateOpenModel(!createOpenModel)}
+        >
           Create Expence
         </Button>
       </div>
@@ -33,13 +40,24 @@ const Dashboard = () => {
         pageIndex={pageIndex}
         setPageIndex={setPageIndex}
         DeleteExpences={DeleteExpences}
+        seteditOpenModel={seteditOpenModel}
+        editOpenModel={editOpenModel}
+        setEditId={setEditId}
       />
 
-      <ModalPortal open={openModel}>
+      <ModalPortal open={createOpenModel}>
         <CreateExpenceModal
-          setOpenModel={setOpenModel}
-          openModel={openModel}
+          setOpenModel={setcreateOpenModel}
+          openModel={createOpenModel}
           refetch={refetch}
+        />
+      </ModalPortal>
+      <ModalPortal open={editOpenModel}>
+        <EditExpenceModal
+          setOpenModel={seteditOpenModel}
+          openModel={editOpenModel}
+          refetch={refetch}
+          editId={editId}
         />
       </ModalPortal>
     </div>

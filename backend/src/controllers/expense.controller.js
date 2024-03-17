@@ -25,14 +25,21 @@ const createExpence = asyncHandler(async (req, res) => {
   if (existedUser) {
     throw new ApiError(409, "User Invalid");
   }
+  const lastExpence = await Expence.findOne().sort({ expence_id: -1 });
+  let expence_id = 1;
 
+  if (lastExpence && !isNaN(lastExpence.expence_id)) {
+    expence_id = Number(lastExpence.expence_id) + 1;
+  }
+
+  console.log(lastExpence);
   const expence = await Expence.create({
+    expence_id,
     expence_title,
     expence_type,
     expence_category,
     expence_money,
     expence_createdBy,
-    hard_delete: false,
     soft_delete: false,
   });
 
@@ -53,10 +60,6 @@ const getExpence = asyncHandler(async (req, res) => {
 
   const expences = await Expence.find({ expence_createdBy: expenseId });
 
-  // if (!expences || expences.length === 0) {
-  //   throw new ApiError(404, "No expenses found for the given user ID");
-  // }
-
   return res.status(200).json({
     status: 200,
     data: {
@@ -70,6 +73,81 @@ const getExpence = asyncHandler(async (req, res) => {
     },
     message: "Expenses fetched successfully",
   });
+});
+const getOneExpence = asyncHandler(async (req, res) => {
+  const expenseId = req.params.id; // Assuming the expense id is provided in the request parameters
+  console.log(expenseId);
+  const expense = await Expence.findById(expenseId);
+
+  if (!expense) {
+    return res.status(404).json({
+      status: 404,
+      message: "Expense not found",
+    });
+  }
+
+  // Check if the expense belongs to the current user
+  if (expense.expence_createdBy.toString() !== req.user._id.toString()) {
+    return res.status(403).json({
+      status: 403,
+      message: "Unauthorized: This expense does not belong to the current user",
+    });
+  }
+
+  return res.status(200).json({
+    status: 200,
+    data: {
+      expense: expense.toObject(),
+    },
+    message: "Expense fetched successfully",
+  });
+});
+
+const editExpence = asyncHandler(async (req, res) => {
+  const expenseId = req.params.id; // Assuming the expense id is provided in the request parameters
+  const updates = req.body; // Assuming the updates are provided in the request body
+
+  try {
+    const expense = await Expence.findById(expenseId);
+
+    if (!expense) {
+      return res.status(404).json({
+        status: 404,
+        message: "Expense not found",
+      });
+    }
+
+    // Check if the expense belongs to the current user
+    if (expense.expence_createdBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        status: 403,
+        message:
+          "Unauthorized: This expense does not belong to the current user",
+      });
+    }
+
+    // Update expense properties with provided updates
+    for (const key in updates) {
+      expense[key] = updates[key];
+    }
+
+    // Save the updated expense
+    await expense.save();
+
+    return res.status(200).json({
+      status: 200,
+      data: {
+        expense: expense.toObject(),
+      },
+      message: "Expense updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      status: 500,
+      message: "Internal Server Error",
+    });
+  }
 });
 
 const getArchiveExpence = asyncHandler(async (req, res) => {
@@ -206,4 +284,6 @@ export {
   getArchiveExpence,
   hardDeleteExpense,
   restoreExpense,
+  getOneExpence,
+  editExpence,
 };

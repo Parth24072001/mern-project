@@ -1,3 +1,4 @@
+import { omit } from "lodash";
 import api from "../../../shared/api/apiinetrcepter";
 
 export const Signup = (data) => {
@@ -21,6 +22,15 @@ export const DeleteAccount = (data) => {
 
 export const CreateExpence = (data) => {
   return api.post(`expence/create-expence`, data);
+};
+export const EditExpence = (data) => {
+  return api.patch(
+    `expence/edit-expence/${data.expence_id}`,
+    omit(data, "expence_id")
+  );
+};
+export const GetOneExpence = (Id) => {
+  return api.get(`expence/get-expence-by-id/${Id}`);
 };
 export const getExpence = (pageIndex) => {
   return api.post(`expence/get-expence/${pageIndex}`);
