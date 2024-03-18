@@ -1,5 +1,3 @@
-ChartJS.register(ArcElement, Tooltip, Legend);
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { useState } from "react";
 import { Button } from "../../../shared/components/common-button/Button";
 import ModalPortal from "../../../shared/components/modal-portal/ModalPortal";
@@ -7,11 +5,13 @@ import ExpenceDataListing from "./ExpenceDataListing";
 import useGetExpence from "../hooks/useGetExpence";
 import useArchiveExpence from "../hooks/useArchiveExpence";
 import ExpenceAddEditModal from "./ExpenceAddEditModal";
-import { Pie } from "react-chartjs-2";
-import Loader from "../../../shared/components/loader/Loader";
+import Search from "./Search";
+// import Graphs from "./Graphs";
 
 const Dashboard = () => {
   const [createOpenModel, setcreateOpenModel] = useState(false);
+  const [paramsData, setParamsData] = useState([]);
+
   const [editData, setEditData] = useState(null);
   const [isEdit, setisEdit] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
@@ -21,7 +21,7 @@ const Dashboard = () => {
     isLoading,
     isFetching,
     refetch,
-  } = useGetExpence(pageIndex);
+  } = useGetExpence(pageIndex, paramsData);
   const { mutate: DeleteExpences } = useArchiveExpence(refetch);
 
   const onclickCreate = () => {
@@ -30,45 +30,10 @@ const Dashboard = () => {
     setEditData(null);
   };
 
-  const bgColor = [
-    "#1C64F2",
-    "#FDBA8C",
-    "#16BDCA",
-    "#D61F69",
-    "#5850EC",
-    "#9061F9",
-    "#F838C2",
-    "#FF8309",
-  ];
-
-  const values = expence && Object.values(expence?.expence_data); // Assuming `values` is a function that extracts values from an object
-  // const key = Object.keys(sortData); // Assuming `keys` is a function that extracts keys from an object
-
-  const data = {
-    datasets: [
-      {
-        data: values,
-        borderWidth: 1,
-        backgroundColor: bgColor,
-      },
-    ],
-  };
-
-  const chartOptions = {
-    cutoutPercentage: 60,
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-      },
-    },
-  };
-  if (isLoading) {
-    return <Loader />;
-  }
   return (
     <div>
-      <div className="flex justify-end items-center mb-3">
+      <div className="flex  justify-between items-center mb-3">
+        <Search setParamsData={setParamsData} setPageIndex={setPageIndex} />
         <Button variant={"default"} onClick={() => onclickCreate()}>
           Create Expence
         </Button>
@@ -85,7 +50,7 @@ const Dashboard = () => {
         setEditData={setEditData}
         setisEdit={setisEdit}
       />
-      <Pie data={data} options={chartOptions} />
+      {/* <Graphs expence={expence} /> */}
 
       <ModalPortal open={createOpenModel}>
         <ExpenceAddEditModal

@@ -21,14 +21,6 @@ const ExpenceDataListing = ({
     setisEdit(true);
   };
 
-  if (isLoading || isFetching) {
-    return (
-      <div className="flex justify-center items-center">
-        <Loader />
-      </div>
-    );
-  }
-
   return (
     <>
       <div className="tableGroup overflow-x-auto">
@@ -59,9 +51,9 @@ const ExpenceDataListing = ({
           </thead>
 
           <tbody className="tableBody">
-            {isLoading ? (
+            {isLoading || isFetching ? (
               <tr>
-                <td colSpan={5} className="text-center py-4">
+                <td colSpan={6} className="text-center py-4">
                   <Loader size="lg" />
                 </td>
               </tr>

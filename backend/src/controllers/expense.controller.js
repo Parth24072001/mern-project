@@ -53,11 +53,28 @@ const createExpence = asyncHandler(async (req, res) => {
 
 const getExpence = asyncHandler(async (req, res) => {
   const pageNumber = req.params.pageindex || 1;
-  const startIndex = (pageNumber - 1) * 10;
-  const endIndex = startIndex + 10;
+  const searchKey = req.params.searchKey;
+
+  const startIndex = (pageNumber - 1) * 15;
+  const endIndex = startIndex + 15;
   const expenseId = req.user?._id;
 
-  const expences = await Expence.find({ expence_createdBy: expenseId });
+  let query = { expence_createdBy: expenseId };
+
+  if (searchKey) {
+    const searchRegex = new RegExp(searchKey, "i");
+    query = {
+      ...query,
+      $or: [
+        { expence_name: { $regex: searchRegex } },
+        { expence_type: { $regex: searchRegex } },
+        { expence_category: { $regex: searchRegex } },
+        { expence_title: { $regex: searchRegex } },
+      ],
+    };
+  }
+
+  let expences = await Expence.find(query).sort({ createdAt: -1 });
 
   return res.status(200).json({
     status: 200,
@@ -67,7 +84,7 @@ const getExpence = asyncHandler(async (req, res) => {
         .map((expence) => expence.toObject())
         .slice(startIndex, endIndex),
       TotalPage: Math.ceil(
-        expences.filter((expence) => expence.soft_delete === false).length / 10
+        expences.filter((expence) => expence.soft_delete === false).length / 15
       ),
       TotalIncome: expences
         .filter(
@@ -81,6 +98,7 @@ const getExpence = asyncHandler(async (req, res) => {
             expense.soft_delete === false && expense.expence_type === "expense"
         )
         .reduce((total, expense) => total + expense.expence_money, 0),
+
       expence_data: expences.reduce((acc, expense) => {
         if (expense.expence_type === "expense" && !expense.soft_delete) {
           if (expense.expence_category in acc) {

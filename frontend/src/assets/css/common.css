@@ -93,7 +93,9 @@ button:disabled{
 
 .tableGroup {
   @apply border border-gray-200 border-solid  rounded-[0.5rem] max-w-[100rem] w-full;
-  max-height: calc(100vh - 212px);
+  min-height: calc(100vh - 238px);
+  max-height: calc(100vh - 238px);
+
 }
 .tableContent {
   @apply min-w-full divide-y divide-gray-300 p-4 overflow-hidden;

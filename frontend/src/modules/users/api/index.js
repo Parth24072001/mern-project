@@ -1,4 +1,4 @@
-import { omit } from "lodash";
+import { isEmpty, omit } from "lodash";
 import api from "../../../shared/api/apiinetrcepter";
 
 export const Signup = (data) => {
@@ -32,8 +32,12 @@ export const EditExpence = (data) => {
 export const GetOneExpence = (Id) => {
   return api.get(`expence/get-expence-by-id/${Id}`);
 };
-export const getExpence = (pageIndex) => {
-  return api.post(`expence/get-expence/${pageIndex}`);
+export const getExpence = (pageIndex, paramsData) => {
+  if (isEmpty(paramsData)) {
+    return api.post(`expence/get-expence/${pageIndex}`);
+  } else {
+    return api.post(`expence/get-expence/${pageIndex}/${paramsData}`);
+  }
 };
 
 export const getArchiveExpence = (pageIndex) => {

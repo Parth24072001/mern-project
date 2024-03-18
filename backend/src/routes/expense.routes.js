@@ -17,7 +17,7 @@ const router = Router();
 //secured routes
 router.route("/create-expence").post(verifyJWT, createExpence);
 router
-  .route("/get-expence/:pageindex")
+  .route("/get-expence/:pageindex/:searchKey?")
   .post(verifyJWT, paginationMiddleware(10), getExpence);
 
 router.route("/archive-expence/:id").post(verifyJWT, softDeleteExpense);
