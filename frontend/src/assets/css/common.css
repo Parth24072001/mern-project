@@ -118,4 +118,8 @@ button:disabled{
   @apply divide-y divide-gray-200;
 }
 
+canvas {
+  @apply mx-auto !h-auto !max-w-[222px] object-contain;
+}
+
 

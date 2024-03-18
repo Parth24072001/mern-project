@@ -69,10 +69,33 @@ const getExpence = asyncHandler(async (req, res) => {
       TotalPage: Math.ceil(
         expences.filter((expence) => expence.soft_delete === false).length / 10
       ),
+      TotalIncome: expences
+        .filter(
+          (expense) =>
+            expense.soft_delete === false && expense.expence_type === "income"
+        )
+        .reduce((total, expense) => total + expense.expence_money, 0),
+      TotalExpense: expences
+        .filter(
+          (expense) =>
+            expense.soft_delete === false && expense.expence_type === "expense"
+        )
+        .reduce((total, expense) => total + expense.expence_money, 0),
+      expence_data: expences.reduce((acc, expense) => {
+        if (expense.expence_type === "expense" && !expense.soft_delete) {
+          if (expense.expence_category in acc) {
+            acc[expense.expence_category] += expense.expence_money;
+          } else {
+            acc[expense.expence_category] = expense.expence_money;
+          }
+        }
+        return acc;
+      }, {}),
     },
     message: "Expenses fetched successfully",
   });
 });
+
 const getOneExpence = asyncHandler(async (req, res) => {
   const expenseId = req.params.id; // Assuming the expense id is provided in the request parameters
   const expense = await Expence.findById(expenseId);
