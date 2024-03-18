@@ -34,6 +34,14 @@ const Dashboard = () => {
     <div>
       <div className="flex  justify-between items-center mb-3">
         <Search setParamsData={setParamsData} setPageIndex={setPageIndex} />
+        <div className=" flex justify-center items-center gap-3">
+          <label>Total Income</label>
+          <p>{expence.TotalIncome}</p>
+        </div>
+        <div className=" flex justify-center items-center gap-3">
+          <label>Total Expense</label>
+          <p>{expence.TotalExpense}</p>
+        </div>
         <Button variant={"default"} onClick={() => onclickCreate()}>
           Create Expence
         </Button>
