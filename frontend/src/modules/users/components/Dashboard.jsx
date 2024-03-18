@@ -40,7 +40,7 @@ const Dashboard = () => {
     "#FF8309",
   ];
 
-  const values = Object.values(expence?.expence_data); // Assuming `values` is a function that extracts values from an object
+  const values = expence && Object.values(expence?.expence_data); // Assuming `values` is a function that extracts values from an object
   // const key = Object.keys(sortData); // Assuming `keys` is a function that extracts keys from an object
 
   const data = {
