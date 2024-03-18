@@ -1,6 +1,6 @@
 import { capitalizeWords } from "../../../shared/helpers/utils";
 import EditIcon from "../../../assets/images/icons/edit.svg?react";
-import DeleteIcon from "../../../assets/images/icons/delete.svg?react";
+import DeleteIcon from "../../../assets/images/icons/archive.svg?react";
 import Loader from "../../../shared/components/loader/Loader";
 import Pagination from "../../../shared/components/pagination/Pagination";
 
