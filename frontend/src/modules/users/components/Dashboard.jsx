@@ -8,6 +8,7 @@ import useGetExpence from "../hooks/useGetExpence";
 import useArchiveExpence from "../hooks/useArchiveExpence";
 import ExpenceAddEditModal from "./ExpenceAddEditModal";
 import { Pie } from "react-chartjs-2";
+import Loader from "../../../shared/components/loader/Loader";
 
 const Dashboard = () => {
   const [createOpenModel, setcreateOpenModel] = useState(false);
@@ -62,7 +63,9 @@ const Dashboard = () => {
       },
     },
   };
-
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <div>
       <div className="flex justify-end items-center mb-3">
