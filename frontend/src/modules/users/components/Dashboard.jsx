@@ -1,18 +1,15 @@
 import { useState } from "react";
 import { Button } from "../../../shared/components/common-button/Button";
 import ModalPortal from "../../../shared/components/modal-portal/ModalPortal";
-
 import ExpenceDataListing from "./ExpenceDataListing";
-import CreateExpenceModal from "./CreateExpenceModal";
 import useGetExpence from "../hooks/useGetExpence";
 import useArchiveExpence from "../hooks/useArchiveExpence";
-import EditExpenceModal from "./EditExpenceModal";
+import ExpenceAddEditModal from "./ExpenceAddEditModal";
 
 const Dashboard = () => {
   const [createOpenModel, setcreateOpenModel] = useState(false);
-  const [editOpenModel, seteditOpenModel] = useState(false);
-  const [editId, setEditId] = useState(null);
-
+  const [editData, setEditData] = useState(null);
+  const [isEdit, setisEdit] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
 
   const {
@@ -23,13 +20,15 @@ const Dashboard = () => {
   } = useGetExpence(pageIndex);
   const { mutate: DeleteExpences } = useArchiveExpence(refetch);
 
+  const onclickCreate = () => {
+    setcreateOpenModel(!createOpenModel);
+    setisEdit(false);
+    setEditData(null);
+  };
   return (
     <div>
       <div className="flex justify-end items-center mb-3">
-        <Button
-          variant={"default"}
-          onClick={() => setcreateOpenModel(!createOpenModel)}
-        >
+        <Button variant={"default"} onClick={() => onclickCreate()}>
           Create Expence
         </Button>
       </div>
@@ -40,24 +39,19 @@ const Dashboard = () => {
         pageIndex={pageIndex}
         setPageIndex={setPageIndex}
         DeleteExpences={DeleteExpences}
-        seteditOpenModel={seteditOpenModel}
-        editOpenModel={editOpenModel}
-        setEditId={setEditId}
+        seteditOpenModel={setcreateOpenModel}
+        editOpenModel={createOpenModel}
+        setEditData={setEditData}
+        setisEdit={setisEdit}
       />
 
       <ModalPortal open={createOpenModel}>
-        <CreateExpenceModal
+        <ExpenceAddEditModal
           setOpenModel={setcreateOpenModel}
           openModel={createOpenModel}
           refetch={refetch}
-        />
-      </ModalPortal>
-      <ModalPortal open={editOpenModel}>
-        <EditExpenceModal
-          setOpenModel={seteditOpenModel}
-          openModel={editOpenModel}
-          refetch={refetch}
-          editId={editId}
+          editData={editData}
+          isEdit={isEdit}
         />
       </ModalPortal>
     </div>

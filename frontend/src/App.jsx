@@ -40,7 +40,7 @@ function App() {
     const refreshTokenFromCookie = getItemFromCookie(REFRESHTOKEN);
 
     if (refreshTokenFromCookie) {
-      const delayInMilliseconds = 1 * 60 * 1000;
+      const delayInMilliseconds = 10 * 60 * 60 * 1000;
       setTimeout(() => {
         fetchData();
       }, delayInMilliseconds);

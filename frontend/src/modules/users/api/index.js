@@ -21,7 +21,7 @@ export const DeleteAccount = (data) => {
 };
 
 export const CreateExpence = (data) => {
-  return api.post(`expence/create-expence`, data);
+  return api.post(`expence/create-expence`, omit(data, "expence_id"));
 };
 export const EditExpence = (data) => {
   return api.patch(

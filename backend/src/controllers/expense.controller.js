@@ -75,7 +75,6 @@ const getExpence = asyncHandler(async (req, res) => {
 });
 const getOneExpence = asyncHandler(async (req, res) => {
   const expenseId = req.params.id; // Assuming the expense id is provided in the request parameters
-  console.log(expenseId);
   const expense = await Expence.findById(expenseId);
 
   if (!expense) {

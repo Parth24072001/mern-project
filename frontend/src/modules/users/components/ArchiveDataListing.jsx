@@ -28,6 +28,9 @@ const ArchiveDataListing = ({
           <thead>
             <tr className="bg-blue-50 rounded-lg">
               <th scope="col" className="!pl-4 !pr-3 tableHeader">
+                expence ID
+              </th>
+              <th scope="col" className="!pl-4 !pr-3 tableHeader">
                 expence title
               </th>
 
@@ -60,6 +63,9 @@ const ArchiveDataListing = ({
                   expence?.expences?.map((data, index) => {
                     return (
                       <tr key={index}>
+                        <td className="tableData max-w-[34.375rem] table_description">
+                          {data?.expence_id ? data?.expence_id : "-"}
+                        </td>
                         <td className="!text-blackolive font-medium tableData">
                           {data?.expence_title
                             ? capitalizeWords(data?.expence_title)
@@ -112,11 +118,13 @@ const ArchiveDataListing = ({
           </tbody>
         </table>
       </div>
-      <Pagination
-        setPageIndex={setPageIndex}
-        pageIndex={pageIndex}
-        lastPage={expence?.TotalPage}
-      />
+      {expence?.expences?.length !== 0 && (
+        <Pagination
+          setPageIndex={setPageIndex}
+          pageIndex={pageIndex}
+          lastPage={expence?.TotalPage}
+        />
+      )}
     </>
   );
 };

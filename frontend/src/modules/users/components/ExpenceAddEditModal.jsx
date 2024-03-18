@@ -1,21 +1,20 @@
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-
+import { useCreateExpenceForm } from "../hooks/useCreateExpenceForm";
 import Select from "react-select";
 import { ExpenceCategory, ExpenceType } from "../../../shared/helpers/utils";
-import useEditExpence from "../hooks/useEditExpence";
-import { useEditExpenceForm } from "../hooks/useEditExpenceForm";
-import useGetOneExpence from "../hooks/useGetOneExpence";
 
-const EditExpenceModal = ({ setOpenModel, openModel, refetch, editId }) => {
+const ExpenceAddEditModal = ({
+  setOpenModel,
+  openModel,
+  refetch,
+  editData,
+  isEdit,
+}) => {
   const [open, setOpen] = useState(true);
 
-  const { data: expence } = useGetOneExpence(editId);
-
-  const { mutate: EditExpence } = useEditExpence(setOpenModel, refetch);
-
   const { handleChange, handleSubmit, errors, values, setFieldValue } =
-    useEditExpenceForm(EditExpence);
+    useCreateExpenceForm(setOpenModel, refetch, isEdit);
   const handleClose = () => {
     setOpenModel(!openModel);
     setOpen(false);
@@ -24,17 +23,19 @@ const EditExpenceModal = ({ setOpenModel, openModel, refetch, editId }) => {
   const handleChangeOption = (field, selectedOption) => {
     setFieldValue(field, selectedOption.value);
   };
+
   useEffect(() => {
-    setFieldValue("expence_type", ExpenceType[0]?.value);
-    setFieldValue("expence_category", ExpenceCategory[0]?.value);
-  }, []);
-  useEffect(() => {
-    setFieldValue("expence_title", expence?.expence_title);
-    setFieldValue("expence_type", expence?.expence_type);
-    setFieldValue("expence_category", expence?.expence_category);
-    setFieldValue("expence_money", expence?.expence_money);
-    setFieldValue("expence_id", expence?._id);
-  }, [expence]);
+    if (editData) {
+      setFieldValue("expence_title", editData?.expence_title);
+      setFieldValue("expence_type", editData?.expence_type);
+      setFieldValue("expence_category", editData?.expence_category);
+      setFieldValue("expence_money", editData?.expence_money);
+      setFieldValue("expence_id", editData?._id);
+    } else {
+      setFieldValue("expence_type", ExpenceType[0]?.value);
+      setFieldValue("expence_category", ExpenceCategory[0]?.value);
+    }
+  }, [editData]);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -65,6 +66,10 @@ const EditExpenceModal = ({ setOpenModel, openModel, refetch, editId }) => {
                 <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                   <div className="absolute right-0 top-0 hidden pr-4 pt-4 sm:block"></div>
                   <div className="flex sm:items-start flex-col maxXs:flex-col maxXs:items-center w-full">
+                    <p className=" text-xl m-auto">
+                      {editData !== null ? "Edit" : "Create"}
+                    </p>
+
                     <div className="mt-3 text-center   sm:text-left w-full">
                       <label>Title</label>
                       <input
@@ -139,7 +144,7 @@ const EditExpenceModal = ({ setOpenModel, openModel, refetch, editId }) => {
                       type="submit"
                       className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-blackolive shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                     >
-                      Edit
+                      {isEdit ? "Update" : "Create"}
                     </button>
                     <button
                       type="button"
@@ -159,4 +164,4 @@ const EditExpenceModal = ({ setOpenModel, openModel, refetch, editId }) => {
   );
 };
 
-export default EditExpenceModal;
+export default ExpenceAddEditModal;

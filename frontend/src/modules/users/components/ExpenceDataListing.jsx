@@ -13,10 +13,12 @@ const ExpenceDataListing = ({
   DeleteExpences,
   seteditOpenModel,
   editOpenModel,
-  setEditId,
+  setEditData,
+  setisEdit,
 }) => {
-  const onclickEdit = (id) => {
-    seteditOpenModel(!editOpenModel), setEditId(id);
+  const onclickEdit = (data) => {
+    seteditOpenModel(!editOpenModel), setEditData(data);
+    setisEdit(true);
   };
 
   if (isLoading || isFetching) {
@@ -93,13 +95,12 @@ const ExpenceDataListing = ({
                         <td className="tableDetail  border-none">
                           <div className="flex justify-start gap-6 items-center">
                             <button
-                              onClick={() => onclickEdit(data?._id)}
+                              onClick={() => onclickEdit(data)}
                               className=" cursor-pointer button_hover"
                             >
                               <EditIcon />
                             </button>
                             <button
-                              // onClick={() => DeleteExpences(data)}
                               onClick={() => DeleteExpences(data?._id)}
                               className=" cursor-pointer button_hover"
                             >
@@ -125,11 +126,13 @@ const ExpenceDataListing = ({
           </tbody>
         </table>
       </div>
-      <Pagination
-        setPageIndex={setPageIndex}
-        pageIndex={pageIndex}
-        lastPage={expence?.TotalPage}
-      />
+      {expence?.expences?.length !== 0 && (
+        <Pagination
+          setPageIndex={setPageIndex}
+          pageIndex={pageIndex}
+          lastPage={expence?.TotalPage}
+        />
+      )}
     </>
   );
 };
