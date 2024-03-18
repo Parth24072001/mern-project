@@ -6,7 +6,6 @@ import useGetExpence from "../hooks/useGetExpence";
 import useArchiveExpence from "../hooks/useArchiveExpence";
 import ExpenceAddEditModal from "./ExpenceAddEditModal";
 import Search from "./Search";
-// import Graphs from "./Graphs";
 
 const Dashboard = () => {
   const [createOpenModel, setcreateOpenModel] = useState(false);
@@ -58,7 +57,6 @@ const Dashboard = () => {
         setEditData={setEditData}
         setisEdit={setisEdit}
       />
-      {/* <Graphs expence={expence} /> */}
 
       <ModalPortal open={createOpenModel}>
         <ExpenceAddEditModal
