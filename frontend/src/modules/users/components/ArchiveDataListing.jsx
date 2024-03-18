@@ -3,6 +3,7 @@ import EditIcon from "../../../assets/images/icons/archive-restore.svg?react";
 import DeleteIcon from "../../../assets/images/icons/delete.svg?react";
 import Loader from "../../../shared/components/loader/Loader";
 import Pagination from "../../../shared/components/pagination/Pagination";
+import { Tooltip } from "react-tooltip";
 
 const ArchiveDataListing = ({
   isLoading,
@@ -86,13 +87,21 @@ const ArchiveDataListing = ({
                         </td>
                         <td className="tableDetail  border-none">
                           <div className="flex justify-start gap-6 items-center">
+                            <Tooltip anchorSelect="#restore" clickable>
+                              Restore
+                            </Tooltip>
                             <button
+                              id="restore"
                               onClick={() => RestoreExpences(data?._id)}
                               className=" cursor-pointer button_hover"
                             >
                               <EditIcon />
                             </button>
+                            <Tooltip anchorSelect="#delete" clickable>
+                              Delete
+                            </Tooltip>
                             <button
+                              id="delete"
                               onClick={() => DeleteExpences(data?._id)}
                               className=" cursor-pointer button_hover"
                             >

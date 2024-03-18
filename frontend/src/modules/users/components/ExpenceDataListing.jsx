@@ -3,6 +3,7 @@ import EditIcon from "../../../assets/images/icons/edit.svg?react";
 import DeleteIcon from "../../../assets/images/icons/archive.svg?react";
 import Loader from "../../../shared/components/loader/Loader";
 import Pagination from "../../../shared/components/pagination/Pagination";
+import { Tooltip } from "react-tooltip";
 
 const ExpenceDataListing = ({
   isLoading,
@@ -86,13 +87,22 @@ const ExpenceDataListing = ({
                         </td>
                         <td className="tableDetail  border-none">
                           <div className="flex justify-start gap-6 items-center">
+                            <Tooltip anchorSelect="#edit" clickable>
+                              Edit
+                            </Tooltip>
                             <button
+                              id="edit"
                               onClick={() => onclickEdit(data)}
                               className=" cursor-pointer button_hover"
                             >
                               <EditIcon />
                             </button>
+
+                            <Tooltip anchorSelect="#archive" clickable>
+                              Archive
+                            </Tooltip>
                             <button
+                              id="archive"
                               onClick={() => DeleteExpences(data?._id)}
                               className=" cursor-pointer button_hover"
                             >
