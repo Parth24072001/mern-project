@@ -6,6 +6,7 @@ import useGetExpence from "../hooks/useGetExpence";
 import useArchiveExpence from "../hooks/useArchiveExpence";
 import ExpenceAddEditModal from "./ExpenceAddEditModal";
 import Search from "./Search";
+import Loader from "../../../shared/components/loader/Loader";
 
 const Dashboard = () => {
   const [createOpenModel, setcreateOpenModel] = useState(false);
@@ -28,6 +29,13 @@ const Dashboard = () => {
     setisEdit(false);
     setEditData(null);
   };
+  if (isLoading) {
+    return (
+      <div>
+        <Loader />;
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -35,11 +43,11 @@ const Dashboard = () => {
         <Search setParamsData={setParamsData} setPageIndex={setPageIndex} />
         <div className=" flex justify-center items-center gap-3">
           <label>Total Income</label>
-          <p>{expence.TotalIncome}</p>
+          <p>{expence?.TotalIncome}</p>
         </div>
         <div className=" flex justify-center items-center gap-3">
           <label>Total Expense</label>
-          <p>{expence.TotalExpense}</p>
+          <p>{expence?.TotalExpense}</p>
         </div>
         <Button variant={"default"} onClick={() => onclickCreate()}>
           Create Expence
