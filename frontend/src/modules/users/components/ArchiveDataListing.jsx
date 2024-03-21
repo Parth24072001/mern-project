@@ -24,6 +24,9 @@ const ArchiveDataListing = ({
 
   return (
     <>
+      <p className=" text-red-600 text-sm text-left">
+        This data will be automatically deleted after 30 days.
+      </p>
       <div className="tableGroup overflow-x-auto">
         <table className="tableContent">
           <thead>
