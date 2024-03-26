@@ -57,6 +57,19 @@ const softDeleteGroup = asyncHandler(async (req, res) => {
     return res.status(404).json(new ApiResponse(404, null, "Group not found"));
   }
 
+  // Check if the group belongs to the current user and if the current user created it
+  if (group.group_createdBy.toString() !== req.user._id.toString()) {
+    return res
+      .status(403)
+      .json(
+        new ApiResponse(
+          403,
+          null,
+          "Unauthorized: This group does not belong to the current user"
+        )
+      );
+  }
+
   // Modify the field value here
   group.soft_delete = true; // Change this line to modify the desired field
 
@@ -79,34 +92,34 @@ const getGroup = asyncHandler(async (req, res) => {
   const pageNumber = req.params.pageindex || 1;
   const searchKey = req.params.searchKey;
   const currentUserEmail = req.user.email; // Assuming user email is accessible this way
+  const userId = req.user?._id;
 
   const startIndex = (pageNumber - 1) * 15;
   const endIndex = startIndex + 15;
-  const groupId = req.user?._id;
 
-  let query = {
-    $or: [
-      { group_createdBy: groupId }, // Groups created by current user
-      { "group_member.value": currentUserEmail }, // Groups where current user is a member
-    ],
-  };
+  let groups = await Group.find().sort({ createdAt: -1 });
+
+  // Filter groups based on ownership or membership
+  groups = groups.filter(
+    (group) =>
+      group.group_createdBy.toString() === userId.toString() ||
+      group.group_member.some((member) => member.value === currentUserEmail)
+  );
 
   if (searchKey) {
     const searchRegex = new RegExp(searchKey, "i");
-    query.$or.push({ group_name: { $regex: searchRegex } }); // Add search condition to existing $or array
+    groups = groups.filter((group) => group.group_name.match(searchRegex)); // Apply search query
   }
-
-  let groups = await Group.find(query).sort({ createdAt: -1 });
 
   return res.status(200).json({
     status: 200,
     data: {
       groups: groups
-        .filter((group) => group.soft_delete === false)
+        .filter((group) => !group.soft_delete)
         .map((group) => group.toObject())
         .slice(startIndex, endIndex),
       TotalPage: Math.ceil(
-        groups.filter((group) => group.soft_delete === false).length / 15
+        groups.filter((group) => !group.soft_delete).length / 15
       ),
     },
     message: "Groups fetched successfully",
@@ -127,20 +140,24 @@ const editGroup = asyncHandler(async (req, res) => {
       });
     }
 
-    // Check if the expense belongs to the current user
-    if (group.group_createdBy.toString() !== req.user._id.toString()) {
+    // Check if the group belongs to the current user and if the current user created it
+    if (
+      group.group_createdBy.toString() !== req.user._id.toString() ||
+      group.group_createdBy.toString() !== req.user._id.toString()
+    ) {
       return res.status(403).json({
         status: 403,
-        message: "Unauthorized: This group does not belong to the current user",
+        message:
+          "Unauthorized: This group does not belong to the current user or you are not the creator of this group",
       });
     }
 
-    // Update expense properties with provided updates
+    // Update group properties with provided updates
     for (const key in updates) {
       group[key] = updates[key];
     }
 
-    // Save the updated expense
+    // Save the updated group
     await group.save();
 
     return res.status(200).json({

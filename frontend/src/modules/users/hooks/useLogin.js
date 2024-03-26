@@ -15,7 +15,7 @@ const useLogin = () => {
       return response;
     },
     onError: (error) => {
-      toast("Something Went Wrong", {
+      toast(error?.response?.data?.message, {
         type: "error",
       });
       console.log(error);
