@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { GetOneExpence } from "../api";
+import { GetOneExpence } from "../../users/api";
 import { toast } from "react-toastify";
 
 const useGetOneExpence = (editId) => {

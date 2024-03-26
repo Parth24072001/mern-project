@@ -1,8 +1,8 @@
 import { useState } from "react";
 import useGetArchiveExpence from "../hooks/useGetArchiveExpence";
 import ArchiveDataListing from "./ArchiveDataListing";
-import useDeleteExpence from "../hooks/useDeleteExpence";
 import useRestoreExpence from "../hooks/useRestoreExpence";
+import useDeleteExpence from "../../expense/hooks/useDeleteExpence";
 
 const Archive = () => {
   const [pageIndex, setPageIndex] = useState(1);

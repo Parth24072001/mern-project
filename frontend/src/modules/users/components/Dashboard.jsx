@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Button } from "../../../shared/components/common-button/Button";
 import ModalPortal from "../../../shared/components/modal-portal/ModalPortal";
-import ExpenceDataListing from "./ExpenceDataListing";
-import useGetExpence from "../hooks/useGetExpence";
+import useGetExpence from "../../expense/hooks/useGetExpence";
 import useArchiveExpence from "../hooks/useArchiveExpence";
-import ExpenceAddEditModal from "./ExpenceAddEditModal";
 import Search from "./Search";
 import Loader from "../../../shared/components/loader/Loader";
+import ExpenceDataListing from "../../expense/components/ExpenceDataListing";
+import ExpenceAddEditModal from "../../expense/components/ExpenceAddEditModal";
 
 const Dashboard = () => {
   const [createOpenModel, setcreateOpenModel] = useState(false);

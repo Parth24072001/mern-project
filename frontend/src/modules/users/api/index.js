@@ -1,4 +1,3 @@
-import { isEmpty, omit } from "lodash";
 import api from "../../../shared/api/apiinetrcepter";
 
 export const Signup = (data) => {
@@ -20,26 +19,6 @@ export const DeleteAccount = (data) => {
   return api.delete(`users/delete-account`, data);
 };
 
-export const CreateExpence = (data) => {
-  return api.post(`expence/create-expence`, omit(data, "expence_id"));
-};
-export const EditExpence = (data) => {
-  return api.patch(
-    `expence/edit-expence/${data.expence_id}`,
-    omit(data, "expence_id")
-  );
-};
-export const GetOneExpence = (Id) => {
-  return api.get(`expence/get-expence-by-id/${Id}`);
-};
-export const getExpence = (pageIndex, paramsData) => {
-  if (isEmpty(paramsData)) {
-    return api.post(`expence/get-expence/${pageIndex}`);
-  } else {
-    return api.post(`expence/get-expence/${pageIndex}/${paramsData}`);
-  }
-};
-
 export const getArchiveExpence = (pageIndex) => {
   return api.post(`expence/get-archive-expence/${pageIndex}`);
 };
@@ -50,8 +29,4 @@ export const ArchiveExpences = (id) => {
 
 export const RestoreExpences = (id) => {
   return api.post(`expence/restore-expence/${id}`);
-};
-
-export const DeleteExpences = (id) => {
-  return api.delete(`expence/delete-expence/${id}`);
 };
