@@ -94,15 +94,6 @@ const ExpenceAddEditModal = ({
                     </div>
                     <div className="mt-3 text-center  sm:text-left w-full">
                       <label>Expense Type</label>
-
-                      <Select
-                        onChange={(e) => handleChangeOption("expence_type", e)}
-                        options={ExpenceType.map((option) => ({
-                          ...option,
-                        }))}
-                        defaultValue={ExpenceType[0]}
-                        isSearchable={false}
-                      />
                     </div>
                     <div className="mt-3 text-center  sm:text-left w-full">
                       <label>Category</label>

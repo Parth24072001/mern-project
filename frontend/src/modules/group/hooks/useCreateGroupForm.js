@@ -12,8 +12,6 @@ export const useCreateGroupForm = (setOpenModel, refetch, isEdit) => {
     initialValues: {
       group_name: "",
       group_member: "",
-      group_createdBy: "",
-      group_id: "",
     },
 
     validationSchema: GroupSchema,

@@ -61,6 +61,37 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdUser, "User registered Successfully"));
 });
 
+const allUsers = async (req, res) => {
+  try {
+    // Assuming you have access to the current user's ID
+    const currentUserId = req.user.id; // Adjust this based on how you access the current user ID
+
+    // Fetch all users except the current user
+    const users = await User.find({ _id: { $ne: currentUserId } })
+      .sort({ createdAt: -1 })
+      .exec();
+
+    return res.status(200).json({
+      status: 200,
+      data: {
+        users: users.map((user) => {
+          return {
+            value: user.email,
+            label: user.username,
+          };
+        }),
+      },
+      message: "Users fetched successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      error: error.message,
+      message: "Error fetching users",
+    });
+  }
+};
+
 const loginUser = asyncHandler(async (req, res) => {
   // req body -> data
   // username or email
@@ -303,4 +334,5 @@ export {
   updateAccountDetails,
   deleteAccount,
   forgetPassword,
+  allUsers,
 };

@@ -12,9 +12,9 @@ export const ArchiveGroup = (id) => {
   return api.post(`group/archive-group/${id}`);
 };
 
-// export const GetGroup = (id) => {
-//   return api.get(`group/get-group/${id}`);
-// };
+export const Getusers = () => {
+  return api.get(`users/all-users`);
+};
 
 export const GetGroup = (pageIndex, paramsData) => {
   if (isEmpty(paramsData)) {

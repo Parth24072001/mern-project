@@ -21,6 +21,7 @@ const SplitWise = () => {
     isFetching,
     refetch,
   } = useGetGroup(pageIndex, paramsData);
+
   const { mutate: DeleteGroup } = useArchiveGroup(refetch);
 
   const onclickCreate = () => {

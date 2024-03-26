@@ -2,6 +2,9 @@ import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
 import { useCreateGroupForm } from "../hooks/useCreateGroupForm";
+import useGetUsers from "../hooks/useGetUsers";
+import Loader from "../../../shared/components/loader/Loader";
+import MultiSelect from "../../../shared/components/multiSelect/MultiSelect";
 
 const GroupAddEditModal = ({
   setOpenModel,
@@ -11,9 +14,13 @@ const GroupAddEditModal = ({
   isEdit,
 }) => {
   const [open, setOpen] = useState(true);
+  const [paramsData, setParamsData] = useState(editData?.group_member);
 
   const { handleChange, handleSubmit, errors, values, setFieldValue } =
     useCreateGroupForm(setOpenModel, refetch, isEdit);
+
+  const { data: users, isLoading, isFetching } = useGetUsers();
+
   const handleClose = () => {
     setOpenModel(!openModel);
     setOpen(false);
@@ -29,6 +36,14 @@ const GroupAddEditModal = ({
     }
   }, [editData]);
 
+  if (isLoading || isFetching) {
+    return (
+      <div className="flex justify-center items-center">
+        <Loader />
+      </div>
+    );
+  }
+  console.log(values);
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-[90]" onClose={() => null}>
@@ -87,18 +102,13 @@ const GroupAddEditModal = ({
 
                     <div className="mt-3 text-center  sm:text-left w-full">
                       <label>Group Member</label>
-                      <input
-                        type="text"
-                        placeholder="Enter Group Member"
-                        name="group_member"
-                        onChange={handleChange}
-                        value={values.group_member}
-                        className={`bg-gray-50 border ${
-                          errors.group_member
-                            ? "border-red-500"
-                            : "border-gray-300"
-                        } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                      <MultiSelect
+                        data={users?.users}
+                        paramsData={paramsData}
+                        setParamsData={setParamsData}
+                        setFieldValue={setFieldValue}
                       />
+
                       {errors.group_member ? (
                         <span className="text-xs text-red-500 pl-1">
                           {errors.group_member}

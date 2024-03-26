@@ -9,6 +9,7 @@ import {
   updateAccountDetails,
   deleteAccount,
   forgetPassword,
+  allUsers,
 } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
@@ -26,6 +27,8 @@ router.route("/current-user").get(verifyJWT, getCurrentUser);
 router.route("/update-account").patch(verifyJWT, updateAccountDetails);
 router.route("/delete-account").delete(verifyJWT, deleteAccount);
 router.route("/forget-password").patch(verifyJWT, forgetPassword);
+router.route("/all-users").get(verifyJWT, allUsers);
+
 // router.route("/forget-password").patch(verifyJWT, getUserInvitation);
 
 export default router;

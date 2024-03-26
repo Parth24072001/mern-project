@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 const createGroup = asyncHandler(async (req, res) => {
   const { group_name, group_member } = req.body;
   const group_createdBy = req.user._id;
-  if ([group_name, group_member].some((field) => field?.trim() === "")) {
+  if ([group_name].some((field) => field?.trim() === "")) {
     throw new ApiError(400, "All fields are required");
   }
 
@@ -78,19 +78,22 @@ const softDeleteGroup = asyncHandler(async (req, res) => {
 const getGroup = asyncHandler(async (req, res) => {
   const pageNumber = req.params.pageindex || 1;
   const searchKey = req.params.searchKey;
+  const currentUserEmail = req.user.email; // Assuming user email is accessible this way
 
   const startIndex = (pageNumber - 1) * 15;
   const endIndex = startIndex + 15;
   const groupId = req.user?._id;
 
-  let query = { group_createdBy: groupId };
+  let query = {
+    $or: [
+      { group_createdBy: groupId }, // Groups created by current user
+      { "group_member.value": currentUserEmail }, // Groups where current user is a member
+    ],
+  };
 
   if (searchKey) {
     const searchRegex = new RegExp(searchKey, "i");
-    query = {
-      ...query,
-      $or: [{ group_name: { $regex: searchRegex } }],
-    };
+    query.$or.push({ group_name: { $regex: searchRegex } }); // Add search condition to existing $or array
   }
 
   let groups = await Group.find(query).sort({ createdAt: -1 });
@@ -109,6 +112,7 @@ const getGroup = asyncHandler(async (req, res) => {
     message: "Groups fetched successfully",
   });
 });
+
 const editGroup = asyncHandler(async (req, res) => {
   const groupId = req.params.id; // Assuming the expense id is provided in the request parameters
   const updates = req.body; // Assuming the updates are provided in the request body
