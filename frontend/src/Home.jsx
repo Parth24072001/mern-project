@@ -7,6 +7,7 @@ import Sidebar from "./shared/components/sidebar/Sidebar";
 import Header from "./shared/components/header/Header";
 import Profile from "./modules/users/components/Profile";
 import Archive from "./modules/users/components/Archive";
+import SplitWise from "./modules/group/components/SplitWise";
 
 const Home = () => {
   const { width } = useWindowSize();
@@ -24,6 +25,7 @@ const Home = () => {
             <Route path="/change-password" index element={<ChangePassword />} />
             <Route path="/profile" index element={<Profile />} />
             <Route path="/archive" index element={<Archive />} />
+            <Route path="/splitwise" index element={<SplitWise />} />
           </Routes>
         </main>
       </div>
