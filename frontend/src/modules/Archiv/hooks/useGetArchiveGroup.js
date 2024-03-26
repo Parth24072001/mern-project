@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { getArchiveExpence } from "../api";
 import { toast } from "react-toastify";
+import { getArchiveGroup } from "../api";
 
-const useGetArchiveExpence = (pageIndex) => {
+const useGetArchiveGroup = (pageIndex) => {
   return useQuery(
-    ["get-archive-expence", pageIndex],
-    () => getArchiveExpence(pageIndex),
+    ["get-archive-group", pageIndex],
+    () => getArchiveGroup(pageIndex),
     {
       select: (res) => {
         return res?.data?.data;
@@ -19,4 +19,4 @@ const useGetArchiveExpence = (pageIndex) => {
   );
 };
 
-export default useGetArchiveExpence;
+export default useGetArchiveGroup;

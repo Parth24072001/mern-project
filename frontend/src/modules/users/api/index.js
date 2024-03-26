@@ -18,15 +18,3 @@ export const PasswordChange = (data) => {
 export const DeleteAccount = (data) => {
   return api.delete(`users/delete-account`, data);
 };
-
-export const getArchiveExpence = (pageIndex) => {
-  return api.post(`expence/get-archive-expence/${pageIndex}`);
-};
-
-export const ArchiveExpences = (id) => {
-  return api.post(`expence/archive-expence/${id}`);
-};
-
-export const RestoreExpences = (id) => {
-  return api.post(`expence/restore-expence/${id}`);
-};

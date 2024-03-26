@@ -38,10 +38,16 @@ function Sidebar({ setSidebarOpen, sidebarOpen }) {
       activeMenu: "/setting",
     },
     {
-      name: "Archive",
-      href: "/archive",
+      name: "Archive Expence",
+      href: "/archive-expence",
       icon: ArchiveIcon,
-      activeMenu: "/archive",
+      activeMenu: "/archive-expence",
+    },
+    {
+      name: "Archive Group",
+      href: "/archive-group",
+      icon: ArchiveIcon,
+      activeMenu: "/archive-group",
     },
   ];
 

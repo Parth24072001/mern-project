@@ -23,3 +23,6 @@ export const getExpence = (pageIndex, paramsData) => {
 export const DeleteExpences = (id) => {
   return api.delete(`expence/delete-expence/${id}`);
 };
+export const DeleteGroup = (id) => {
+  return api.delete(`group/delete-group/${id}`);
+};

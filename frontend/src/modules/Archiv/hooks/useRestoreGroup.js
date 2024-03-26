@@ -1,15 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { ArchiveExpences } from "../api";
+import { RestoreGroup } from "../api";
 
-const useArchiveExpence = (refetch) => {
-  return useMutation((data) => ArchiveExpences(data), {
+const useRestoreGroup = (refetch) => {
+  return useMutation((data) => RestoreGroup(data), {
     onSuccess: (response) => {
-      toast("Expences archive successful!", {
+      toast("Group restore successful!", {
         type: "success",
       });
       refetch();
-
       return response;
     },
     onError: (error) => {
@@ -21,4 +20,4 @@ const useArchiveExpence = (refetch) => {
   });
 };
 
-export default useArchiveExpence;
+export default useRestoreGroup;

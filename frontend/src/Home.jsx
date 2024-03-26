@@ -6,8 +6,10 @@ import { useWindowSize } from "@uidotdev/usehooks";
 import Sidebar from "./shared/components/sidebar/Sidebar";
 import Header from "./shared/components/header/Header";
 import Profile from "./modules/users/components/Profile";
-import Archive from "./modules/users/components/Archive";
+
 import SplitWise from "./modules/group/components/SplitWise";
+import ArchiveExpence from "./modules/Archiv/components/ArchiveExpence";
+import ArchieveGroup from "./modules/Archiv/components/ArchieveGroup";
 
 const Home = () => {
   const { width } = useWindowSize();
@@ -24,8 +26,9 @@ const Home = () => {
             <Route path="/" index element={<Dashboard />} />
             <Route path="/change-password" index element={<ChangePassword />} />
             <Route path="/profile" index element={<Profile />} />
-            <Route path="/archive" index element={<Archive />} />
+            <Route path="/archive-expence" index element={<ArchiveExpence />} />
             <Route path="/splitwise" index element={<SplitWise />} />
+            <Route path="/archive-group" index element={<ArchieveGroup />} />
           </Routes>
         </main>
       </div>

@@ -25,6 +25,7 @@ const GroupAddEditModal = ({
       setFieldValue("group_member", editData?.group_member);
       setFieldValue("group_id", editData?.group_id);
       setFieldValue("group_createdBy", editData?.group_createdBy);
+      setFieldValue("_id", editData?._id);
     }
   }, [editData]);
 

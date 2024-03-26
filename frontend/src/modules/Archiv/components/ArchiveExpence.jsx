@@ -4,7 +4,7 @@ import ArchiveDataListing from "./ArchiveDataListing";
 import useRestoreExpence from "../hooks/useRestoreExpence";
 import useDeleteExpence from "../../expense/hooks/useDeleteExpence";
 
-const Archive = () => {
+const ArchiveExpence = () => {
   const [pageIndex, setPageIndex] = useState(1);
   const {
     data: expence,
@@ -29,4 +29,4 @@ const Archive = () => {
   );
 };
 
-export default Archive;
+export default ArchiveExpence;
