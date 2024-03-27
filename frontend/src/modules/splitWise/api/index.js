@@ -2,7 +2,10 @@ import { isEmpty, omit } from "lodash";
 import api from "../../../shared/api/apiinetrcepter";
 
 export const getDeleteSplitWise = (id) => {
-  return api.post(`split/delete-splitwise/${id}`);
+  return api.delete(`split/delete-splitwise/${id}`);
+};
+export const getOnegroup = (id) => {
+  return api.get(`group/get-group-by-id/${id}`);
 };
 
 export const getSplitWise = (pageIndex, paramsData, groupid) => {

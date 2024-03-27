@@ -13,7 +13,7 @@ export const ExpenceType = [
   { value: "income", label: "Debit" },
 ];
 export const SplitWiseType = [
-  { value: "equally", label: "Qqually" },
+  { value: "equally", label: "Equally" },
   { value: "manually", label: "Manually" },
 ];
 

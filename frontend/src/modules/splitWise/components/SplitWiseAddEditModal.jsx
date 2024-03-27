@@ -8,6 +8,7 @@ import {
   SplitWiseType,
 } from "../../../shared/helpers/utils";
 import { useCreateSplitWiseForm } from "../hooks/useCreateSplitWiseForm";
+import useGetOneGroup from "../hooks/useGetOneGroup";
 
 const SplitWiseAddEditModal = ({
   setOpenModel,
@@ -25,11 +26,25 @@ const SplitWiseAddEditModal = ({
     setOpenModel(!openModel);
     setOpen(false);
   };
+  const { data: expence } = useGetOneGroup(groupid);
 
   const handleChangeOption = (field, selectedOption) => {
     setFieldValue(field, selectedOption.value);
   };
 
+  const [memberAmounts, setMemberAmounts] = useState(
+    expence.group.group_member.map((member) => ({ ...member, amount: "" }))
+  );
+
+  const onChangeMemberValue = (e, index) => {
+    const newAmounts = [...memberAmounts];
+    newAmounts[index] = { ...newAmounts[index], amount: e.target.value };
+    setMemberAmounts(newAmounts);
+  };
+
+  useEffect(() => {
+    setFieldValue("splitwise_manually", memberAmounts);
+  }, [memberAmounts]);
   useEffect(() => {
     if (editData) {
       setFieldValue("expence_title", editData?.expence_title);
@@ -45,11 +60,11 @@ const SplitWiseAddEditModal = ({
       setFieldValue("expence_category", ExpenceCategory[0]?.value);
       setFieldValue("group_id", groupid);
 
-      setFieldValue("splitwise", SplitWiseAddEditModal[0]?.value);
+      setFieldValue("splitwise", SplitWiseType[0]?.value);
     }
   }, [editData]);
-
   console.log(values);
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-[90]" onClose={() => null}>
@@ -135,6 +150,21 @@ const SplitWiseAddEditModal = ({
                         isSearchable={false}
                       />
                     </div>
+                    {values?.splitwise !== "equally" &&
+                      expence?.group?.group_member?.map((member, index) => (
+                        <div
+                          key={index}
+                          className="flex justify-between items-center my-2 w-full gap-3"
+                        >
+                          <label className=" w-1/2">{member.value}</label>
+                          <input
+                            onChange={(e) => onChangeMemberValue(e, index)}
+                            type="number"
+                            className={`bg-gray-50 border ${"border-gray-300"} text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500  w-1/2`}
+                          />
+                        </div>
+                      ))}
+
                     <div className="mt-3 text-center  sm:text-left w-full">
                       <label>Amount</label>
                       <input
