@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import { Notification } from "../models/notification.model.js";
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -251,16 +252,28 @@ const getCurrentUser = asyncHandler(async (req, res) => {
   const invited = await User.aggregate([
     {
       $match: {
-        username: { $ne: req.user?.username }, // Match documents where the username is not the same as the provided username
-        inviteBy: req.user?.username, // Match the inviteBy field with the provided username
+        username: { $ne: req.user?.username },
+        inviteBy: req.user?.username,
       },
     },
   ]);
-  const currentUserData = req.user.toObject(); // Assuming req.user contains the current user's data
+
+  const notification = await Notification.aggregate([
+    {
+      $match: {
+        message_for: req.user?.email, // Filter notifications based on req.user.email
+      },
+    },
+  ]);
+  const currentUserData = req.user.toObject();
   return res.status(200).json({
     status: 200,
 
-    data: { ...currentUserData, invited: invited?.length }, // Spread currentUserData object
+    data: {
+      ...currentUserData,
+      invited: invited?.length,
+      notification: notification,
+    },
 
     message: "User fetched successfully",
   });
@@ -290,7 +303,6 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 });
 
 const deleteAccount = asyncHandler(async (req, res) => {
-  // You might want to prompt the user for confirmation before proceeding with deletion
   const user = await User.findByIdAndDelete(req.user?._id);
 
   if (!user) {

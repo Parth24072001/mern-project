@@ -5,6 +5,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.model.js";
 import { Group } from "../models/group.model.js";
 import mongoose from "mongoose";
+import { Notification } from "../models/notification.model.js";
 
 const createGroup = asyncHandler(async (req, res) => {
   const { group_name } = req.body; // Remove group_member from here
@@ -37,6 +38,15 @@ const createGroup = asyncHandler(async (req, res) => {
   if (!group) {
     throw new ApiError(500, "Something went wrong while creating a group");
   }
+
+  req.body.group_member.map(async (member) => {
+    await Notification.create({
+      message: `You have been added to the group ${group_name}`,
+      message_for: member.value,
+      message_by: currentUser.fullName,
+      read: false,
+    });
+  });
 
   return res
     .status(201)
