@@ -9,7 +9,7 @@ import useArchiveGroup from "../../Archiv/hooks/useArchiveGroup";
 
 const SplitWise = () => {
   const [createOpenModel, setcreateOpenModel] = useState(false);
-  const [paramsData, setParamsData] = useState([]);
+  const [paramsData, setParamsData] = useState("");
 
   const [editData, setEditData] = useState(null);
   const [isEdit, setisEdit] = useState(false);

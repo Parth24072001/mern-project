@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 const Search = ({ setParamsData, setPageIndex }) => {
   const [value, setValue] = useState("");
 
-  const onSearchClick = () => {
+  const onSearchClick = (e) => {
     setParamsData(value);
     setPageIndex(1);
+    e.stopPropagation();
   };
   useEffect(() => {
-    if (value.length === 0) {
+    if (value?.length === 0) {
       setParamsData("");
     }
   }, [value]);
@@ -24,7 +25,7 @@ const Search = ({ setParamsData, setPageIndex }) => {
         />
         <button
           className="flex items-center justify-center px-4 border-l"
-          onClick={() => onSearchClick()}
+          onClick={(e) => onSearchClick(e)}
         >
           <svg
             className="h-4 w-4 text-grey-dark"

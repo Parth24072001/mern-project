@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button } from "../../../shared/components/common-button/Button";
-import Loader from "../../../shared/components/loader/Loader";
 import ModalPortal from "../../../shared/components/modal-portal/ModalPortal";
 import Search from "../../users/components/Search";
 import useGetSplitWise from "../hooks/useGetSplitWise";
@@ -11,7 +10,7 @@ import { useParams } from "react-router-dom";
 
 const SplitWiseExpence = () => {
   const [createOpenModel, setcreateOpenModel] = useState(false);
-  const [paramsData, setParamsData] = useState([]);
+  const [paramsData, setParamsData] = useState("");
 
   const [editData, setEditData] = useState(null);
   const [isEdit, setisEdit] = useState(false);
@@ -31,13 +30,6 @@ const SplitWiseExpence = () => {
     setisEdit(false);
     setEditData(null);
   };
-  if (isLoading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
-  }
 
   return (
     <div>

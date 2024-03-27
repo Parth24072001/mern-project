@@ -3,14 +3,13 @@ import { Button } from "../../../shared/components/common-button/Button";
 import ModalPortal from "../../../shared/components/modal-portal/ModalPortal";
 import useGetExpence from "../../expense/hooks/useGetExpence";
 import Search from "./Search";
-import Loader from "../../../shared/components/loader/Loader";
 import ExpenceDataListing from "../../expense/components/ExpenceDataListing";
 import ExpenceAddEditModal from "../../expense/components/ExpenceAddEditModal";
 import useArchiveExpence from "../../Archiv/hooks/useArchiveExpence";
 
 const Dashboard = () => {
   const [createOpenModel, setcreateOpenModel] = useState(false);
-  const [paramsData, setParamsData] = useState([]);
+  const [paramsData, setParamsData] = useState("");
 
   const [editData, setEditData] = useState(null);
   const [isEdit, setisEdit] = useState(false);
@@ -29,13 +28,6 @@ const Dashboard = () => {
     setisEdit(false);
     setEditData(null);
   };
-  if (isLoading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
-  }
 
   return (
     <div>
