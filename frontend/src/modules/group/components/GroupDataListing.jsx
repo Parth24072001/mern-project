@@ -20,7 +20,8 @@ const GroupDataListing = ({
 }) => {
   const navigate = useNavigate();
 
-  const onclickEdit = (data) => {
+  const onclickEdit = (e, data) => {
+    e.stopPropagation();
     seteditOpenModel(!editOpenModel), setEditData(data);
     setisEdit(true);
   };
@@ -77,8 +78,8 @@ const GroupDataListing = ({
                             </Tooltip>
                             <button
                               id="edit"
-                              onClick={() => onclickEdit(data)}
-                              className=" cursor-pointer button_hover"
+                              onClick={(e) => onclickEdit(e, data)}
+                              className=" cursor-pointer button_hover p-4"
                             >
                               <EditIcon />
                             </button>

@@ -33,7 +33,10 @@ const SplitWiseAddEditModal = ({
   };
 
   const [memberAmounts, setMemberAmounts] = useState(
-    expence.group.group_member.map((member) => ({ ...member, amount: "" }))
+    expence?.group?.group_member?.map((member) => ({
+      ...member,
+      amount: values?.expence_money / expence?.group?.group_member?.length,
+    }))
   );
 
   const onChangeMemberValue = (e, index) => {
@@ -50,6 +53,8 @@ const SplitWiseAddEditModal = ({
       setFieldValue("expence_title", editData?.expence_title);
       setFieldValue("expence_type", editData?.expence_type);
       setFieldValue("splitwise", editData?.splitwise);
+      setFieldValue("splitwise", editData?.splitwise);
+      setFieldValue("splitwise_manually", editData?.splitwise_manually);
 
       setFieldValue("expence_category", editData?.expence_category);
       setFieldValue("expence_money", editData?.expence_money);
@@ -59,12 +64,21 @@ const SplitWiseAddEditModal = ({
       setFieldValue("expence_type", ExpenceType[0]?.value);
       setFieldValue("expence_category", ExpenceCategory[0]?.value);
       setFieldValue("group_id", groupid);
+      setFieldValue(
+        "splitwise_manually",
+        expence?.group?.group_member?.map((member) => ({
+          ...member,
+          amount: values?.expence_money / expence?.group?.group_member?.length,
+        }))
+      );
 
       setFieldValue("splitwise", SplitWiseType[0]?.value);
     }
-  }, [editData]);
+  }, [editData, values?.expence_money]);
+
   console.log(values);
 
+  console.log(memberAmounts);
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-[90]" onClose={() => null}>
@@ -151,7 +165,7 @@ const SplitWiseAddEditModal = ({
                       />
                     </div>
                     {values?.splitwise !== "equally" &&
-                      expence?.group?.group_member?.map((member, index) => (
+                      memberAmounts?.map((member, index) => (
                         <div
                           key={index}
                           className="flex justify-between items-center my-2 w-full gap-3"
@@ -160,6 +174,9 @@ const SplitWiseAddEditModal = ({
                           <input
                             onChange={(e) => onChangeMemberValue(e, index)}
                             type="number"
+                            value={
+                              values?.expence_money / memberAmounts?.length
+                            }
                             className={`bg-gray-50 border ${"border-gray-300"} text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500  w-1/2`}
                           />
                         </div>
