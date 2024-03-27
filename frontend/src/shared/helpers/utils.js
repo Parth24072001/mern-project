@@ -12,6 +12,10 @@ export const ExpenceType = [
   { value: "expense", label: "Credit" },
   { value: "income", label: "Debit" },
 ];
+export const SplitWiseType = [
+  { value: "equally", label: "Qqually" },
+  { value: "manually", label: "Manually" },
+];
 
 export const ExpenceCategory = [
   { value: "food", label: "Food" },

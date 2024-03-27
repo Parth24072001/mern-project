@@ -4,22 +4,19 @@ import DeleteIcon from "../../../assets/images/icons/archive.svg?react";
 import Loader from "../../../shared/components/loader/Loader";
 import Pagination from "../../../shared/components/pagination/Pagination";
 import { Tooltip } from "react-tooltip";
-import { useNavigate } from "react-router-dom";
 
-const GroupDataListing = ({
+const SplitWiseDataListing = ({
   isLoading,
   isFetching,
-  group,
+  expence,
   pageIndex,
   setPageIndex,
-  DeleteGroup,
+  DeleteExpences,
   seteditOpenModel,
   editOpenModel,
   setEditData,
   setisEdit,
 }) => {
-  const navigate = useNavigate();
-
   const onclickEdit = (data) => {
     seteditOpenModel(!editOpenModel), setEditData(data);
     setisEdit(true);
@@ -32,12 +29,22 @@ const GroupDataListing = ({
           <thead>
             <tr className="bg-blue-50 rounded-lg">
               <th scope="col" className="!pl-4 !pr-3 tableHeader">
-                Group id
+                expence id
               </th>
               <th scope="col" className="!pl-4 !pr-3 tableHeader">
-                Group name
+                expence title
               </th>
 
+              <th scope="col" className="tableHeader">
+                expence type
+              </th>
+
+              <th scope="col" className="tableHeader">
+                expence category
+              </th>
+              <th scope="col" className="tableHeader">
+                expence money
+              </th>
               <th scope="col" className="tableHeader">
                 ACTIONS
               </th>
@@ -53,23 +60,31 @@ const GroupDataListing = ({
               </tr>
             ) : (
               <>
-                {group?.groups?.length > 0 &&
-                  group?.groups?.map((data, index) => {
+                {expence?.expences?.length > 0 &&
+                  expence?.expences?.map((data, index) => {
                     return (
-                      <tr
-                        key={index}
-                        onClick={() => navigate(`/splitwise/${data?.group_id}`)}
-                        className=" cursor-pointer"
-                      >
+                      <tr key={index}>
                         <td className="tableData max-w-[34.375rem] table_description">
-                          {data?.group_id ? data?.group_id : "-"}
+                          {data?.expence_id ? data?.expence_id : "-"}
                         </td>
                         <td className="!text-blackolive font-medium tableData">
-                          {data?.group_name
-                            ? capitalizeWords(data?.group_name)
+                          {data?.expence_title
+                            ? capitalizeWords(data?.expence_title)
+                            : "-"}
+                        </td>
+                        <td className="tableData max-w-[34.375rem] table_description">
+                          {data?.expence_type ? data?.expence_type : "-"}
+                        </td>
+
+                        <td className="tableData max-w-[34.375rem] table_description">
+                          {data?.expence_category
+                            ? data?.expence_category
                             : "-"}
                         </td>
 
+                        <td className="tableData max-w-[34.375rem] table_description">
+                          {data?.expence_money ? data?.expence_money : "-"}
+                        </td>
                         <td className="tableDetail  border-none">
                           <div className="flex justify-start gap-6 items-center">
                             <Tooltip anchorSelect="#edit" clickable>
@@ -88,7 +103,7 @@ const GroupDataListing = ({
                             </Tooltip>
                             <button
                               id="archive"
-                              onClick={() => DeleteGroup(data?._id)}
+                              onClick={() => DeleteExpences(data?._id)}
                               className=" cursor-pointer button_hover"
                             >
                               <DeleteIcon />
@@ -98,7 +113,7 @@ const GroupDataListing = ({
                       </tr>
                     );
                   })}
-                {group?.groups?.length === 0 && (
+                {expence?.expences?.length === 0 && (
                   <tr>
                     <td
                       className="!text-blackolive font-medium tableData text-center"
@@ -113,15 +128,15 @@ const GroupDataListing = ({
           </tbody>
         </table>
       </div>
-      {group?.groups?.length !== 0 && (
+      {expence?.expences?.length !== 0 && (
         <Pagination
           setPageIndex={setPageIndex}
           pageIndex={pageIndex}
-          lastPage={group?.TotalPage}
+          lastPage={expence?.TotalPage}
         />
       )}
     </>
   );
 };
 
-export default GroupDataListing;
+export default SplitWiseDataListing;

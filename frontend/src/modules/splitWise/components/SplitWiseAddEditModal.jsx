@@ -1,10 +1,15 @@
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { useCreateExpenceForm } from "../hooks/useCreateExpenceForm";
+import { useParams } from "react-router-dom";
 import Select from "react-select";
-import { ExpenceCategory, ExpenceType } from "../../../shared/helpers/utils";
+import {
+  ExpenceCategory,
+  ExpenceType,
+  SplitWiseType,
+} from "../../../shared/helpers/utils";
+import { useCreateSplitWiseForm } from "../hooks/useCreateSplitWiseForm";
 
-const ExpenceAddEditModal = ({
+const SplitWiseAddEditModal = ({
   setOpenModel,
   openModel,
   refetch,
@@ -12,9 +17,10 @@ const ExpenceAddEditModal = ({
   isEdit,
 }) => {
   const [open, setOpen] = useState(true);
+  const { groupid } = useParams();
 
   const { handleChange, handleSubmit, errors, values, setFieldValue } =
-    useCreateExpenceForm(setOpenModel, refetch, isEdit);
+    useCreateSplitWiseForm(setOpenModel, refetch, isEdit);
   const handleClose = () => {
     setOpenModel(!openModel);
     setOpen(false);
@@ -28,15 +34,22 @@ const ExpenceAddEditModal = ({
     if (editData) {
       setFieldValue("expence_title", editData?.expence_title);
       setFieldValue("expence_type", editData?.expence_type);
+      setFieldValue("splitwise", editData?.splitwise);
+
       setFieldValue("expence_category", editData?.expence_category);
       setFieldValue("expence_money", editData?.expence_money);
       setFieldValue("expence_id", editData?._id);
+      setFieldValue("group_id", groupid);
     } else {
       setFieldValue("expence_type", ExpenceType[0]?.value);
       setFieldValue("expence_category", ExpenceCategory[0]?.value);
+      setFieldValue("group_id", groupid);
+
+      setFieldValue("splitwise", SplitWiseAddEditModal[0]?.value);
     }
   }, [editData]);
 
+  console.log(values);
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-[90]" onClose={() => null}>
@@ -113,7 +126,15 @@ const ExpenceAddEditModal = ({
                         isSearchable={false}
                       />
                     </div>
-
+                    <div className="mt-3 text-center  sm:text-left w-full">
+                      <label>Split Wise Type</label>
+                      <Select
+                        onChange={(e) => handleChangeOption("splitwise", e)}
+                        options={SplitWiseType}
+                        defaultValue={SplitWiseType[0]}
+                        isSearchable={false}
+                      />
+                    </div>
                     <div className="mt-3 text-center  sm:text-left w-full">
                       <label>Amount</label>
                       <input
@@ -162,4 +183,4 @@ const ExpenceAddEditModal = ({
   );
 };
 
-export default ExpenceAddEditModal;
+export default SplitWiseAddEditModal;

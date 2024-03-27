@@ -32,17 +32,13 @@ app.use(cookieParser());
 import userRouter from "./routes/user.routes.js";
 import expenceRouter from "./routes/expense.routes.js";
 import groupRouter from "./routes/group.routes.js";
-
-// import archieveRouter from "./routes/archieve.routes.js";
+import splitwiseRouter from "./routes/splitwise.routes.js";
 
 //routes declaration
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/expence", expenceRouter);
 app.use("/api/v1/group", groupRouter);
-
-// app.use("/api/v1/archieve", archieveRouter);
-
-// http://localhost:8000/api/v1/users/register
+app.use("/api/v1/split", splitwiseRouter);
 
 export { app };

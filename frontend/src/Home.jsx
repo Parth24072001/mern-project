@@ -10,6 +10,7 @@ import Profile from "./modules/users/components/Profile";
 import SplitWise from "./modules/group/components/SplitWise";
 import ArchiveExpence from "./modules/Archiv/components/ArchiveExpence";
 import ArchieveGroup from "./modules/Archiv/components/ArchieveGroup";
+import SplitWiseExpence from "./modules/splitWise/components/SplitWiseExpence";
 
 const Home = () => {
   const { width } = useWindowSize();
@@ -29,6 +30,11 @@ const Home = () => {
             <Route path="/archive-expence" index element={<ArchiveExpence />} />
             <Route path="/splitwise" index element={<SplitWise />} />
             <Route path="/archive-group" index element={<ArchieveGroup />} />
+            <Route
+              path="/splitwise/:groupid"
+              index
+              element={<SplitWiseExpence />}
+            />
           </Routes>
         </main>
       </div>
