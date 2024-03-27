@@ -76,9 +76,6 @@ const SplitWiseAddEditModal = ({
     }
   }, [editData, values?.expence_money]);
 
-  console.log(values);
-
-  console.log(memberAmounts);
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-[90]" onClose={() => null}>
