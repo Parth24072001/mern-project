@@ -123,5 +123,8 @@ button:disabled{
 canvas {
   @apply mx-auto !h-auto !max-w-[222px] object-contain;
 }
-
+.notification svg circle{
+fill: red;
+stroke: red;
+}
 

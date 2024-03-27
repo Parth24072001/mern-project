@@ -5,6 +5,7 @@ import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import { Notification } from "../models/notification.model.js";
+import userServices from "../services/userServices.js";
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -24,7 +25,45 @@ const generateAccessAndRefereshTokens = async (userId) => {
   }
 };
 
-const registerUser = asyncHandler(async (req, res) => {
+// const registerUser = asyncHandler(async (req, res) => {
+//   const { fullName, email, username, password, inviteBy } = req.body;
+
+//   if (
+//     [fullName, email, username, password].some((field) => field?.trim() === "")
+//   ) {
+//     throw new ApiError(400, "All fields are required");
+//   }
+
+//   const existedUser = await User.findOne({
+//     $or: [{ username }, { email }],
+//   });
+
+//   if (existedUser) {
+//     throw new ApiError(409, "User with email or username already exists");
+//   }
+
+//   const user = await User.create({
+//     fullName,
+//     email,
+//     password,
+//     inviteBy,
+//     username: username?.toLowerCase(),
+//   });
+
+//   const createdUser = await User.findById(user._id).select(
+//     "-password -refreshToken"
+//   );
+
+//   if (!createdUser) {
+//     throw new ApiError(500, "Something went wrong while registering the user");
+//   }
+
+//   return res
+//     .status(201)
+//     .json(new ApiResponse(200, createdUser, "User registered Successfully"));
+// });
+
+const registerUser = async (req, res) => {
   const { fullName, email, username, password, inviteBy } = req.body;
 
   if (
@@ -32,35 +71,30 @@ const registerUser = asyncHandler(async (req, res) => {
   ) {
     throw new ApiError(400, "All fields are required");
   }
+  try {
+    const existedUser = await User.findOne({
+      $or: [{ username }, { email }],
+    });
 
-  const existedUser = await User.findOne({
-    $or: [{ username }, { email }],
-  });
+    if (existedUser) {
+      throw new ApiError(409, "User with email or username already exists");
+    }
 
-  if (existedUser) {
-    throw new ApiError(409, "User with email or username already exists");
+    const createdUser = await userServices.createUser(
+      fullName,
+      email,
+      password,
+      inviteBy,
+      username?.toLowerCase()
+    );
+    return res
+      .status(201)
+      .json(new ApiResponse(200, createdUser, "User registered Successfully"));
+  } catch (error) {
+    console.error("Something Went Wrong!", error);
+    res.status(500).json({ error: error });
   }
-
-  const user = await User.create({
-    fullName,
-    email,
-    password,
-    inviteBy,
-    username: username?.toLowerCase(),
-  });
-
-  const createdUser = await User.findById(user._id).select(
-    "-password -refreshToken"
-  );
-
-  if (!createdUser) {
-    throw new ApiError(500, "Something went wrong while registering the user");
-  }
-
-  return res
-    .status(201)
-    .json(new ApiResponse(200, createdUser, "User registered Successfully"));
-});
+};
 
 const allUsers = async (req, res) => {
   try {
@@ -265,6 +299,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
       },
     },
   ]);
+  const allRead = notification.every((notification) => notification.read);
   const currentUserData = req.user.toObject();
   return res.status(200).json({
     status: 200,
@@ -273,6 +308,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
       ...currentUserData,
       invited: invited?.length,
       notification: notification,
+      allNotificationsRead: allRead,
     },
 
     message: "User fetched successfully",

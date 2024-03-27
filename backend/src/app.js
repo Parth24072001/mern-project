@@ -33,6 +33,7 @@ import userRouter from "./routes/user.routes.js";
 import expenceRouter from "./routes/expense.routes.js";
 import groupRouter from "./routes/group.routes.js";
 import splitwiseRouter from "./routes/splitwise.routes.js";
+import notificationRouter from "./routes/notification.routes.js";
 
 //routes declaration
 
@@ -40,5 +41,6 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/expence", expenceRouter);
 app.use("/api/v1/group", groupRouter);
 app.use("/api/v1/split", splitwiseRouter);
+app.use("/api/v1/notification", notificationRouter);
 
 export { app };

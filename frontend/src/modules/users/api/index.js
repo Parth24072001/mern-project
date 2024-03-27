@@ -3,6 +3,13 @@ import api from "../../../shared/api/apiinetrcepter";
 export const Signup = (data) => {
   return api.post(`users/register`, data);
 };
+export const NotiFication = (id) => {
+  return api.patch(`notification/read-notification/${id}`);
+};
+export const NotiFicationReadAll = () => {
+  return api.patch(`notification/readall`);
+};
+
 export const Login = (data) => {
   return api.post(`users/login`, data);
 };
