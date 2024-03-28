@@ -120,19 +120,21 @@ const getGroup = asyncHandler(async (req, res) => {
     groups = groups.filter((group) => group.group_name.match(searchRegex)); // Apply search query
   }
 
-  return res.status(200).json({
-    status: 200,
-    data: {
-      groups: groups
-        .filter((group) => !group.soft_delete)
-        .map((group) => group.toObject())
-        .slice(startIndex, endIndex),
-      TotalPage: Math.ceil(
-        groups.filter((group) => !group.soft_delete).length / 15
-      ),
-    },
-    message: "Groups fetched successfully",
-  });
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        groups: groups
+          .filter((group) => !group.soft_delete)
+          .map((group) => group.toObject())
+          .slice(startIndex, endIndex),
+        TotalPage: Math.ceil(
+          groups.filter((group) => !group.soft_delete).length / 15
+        ),
+      },
+      "Groups fetched successfully"
+    )
+  );
 });
 
 const editGroup = asyncHandler(async (req, res) => {
@@ -143,10 +145,9 @@ const editGroup = asyncHandler(async (req, res) => {
     const group = await Group.findById(groupId);
 
     if (!group) {
-      return res.status(404).json({
-        status: 404,
-        message: "Group not found",
-      });
+      return res
+        .status(404)
+        .json(new ApiResponse(404, null, "Group not found"));
     }
 
     // Check if the group belongs to the current user and if the current user created it
@@ -154,11 +155,10 @@ const editGroup = asyncHandler(async (req, res) => {
       group.group_createdBy.toString() !== req.user._id.toString() ||
       group.group_createdBy.toString() !== req.user._id.toString()
     ) {
-      return res.status(403).json({
-        status: 403,
-        message:
-          "Unauthorized: This group does not belong to the current user or you are not the creator of this group",
-      });
+      throw new ApiError(
+        403,
+        "Unauthorized: This group does not belong to the current user or you are not the creator of this group"
+      );
     }
 
     // Update group properties with provided updates
@@ -169,19 +169,19 @@ const editGroup = asyncHandler(async (req, res) => {
     // Save the updated group
     await group.save();
 
-    return res.status(200).json({
-      status: 200,
-      data: {
-        group: group.toObject(),
-      },
-      message: "Group updated successfully",
-    });
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          group: group.toObject(),
+        },
+        "Group updated successfully"
+      )
+    );
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
-      status: 500,
-      message: "Internal Server Error",
-    });
+
+    throw new ApiError(500, "Internal Server Error");
   }
 });
 
@@ -245,21 +245,20 @@ const getOneGroup = asyncHandler(async (req, res) => {
   const group = await Group.findOne({ group_id: groupId }); // Change to find by group_id
 
   if (!group) {
-    return res.status(404).json({
-      status: 404,
-      message: "Group not found",
-    });
+    throw new ApiError(404, "Group not found");
   }
 
   // Check if the expense belongs to the current user
 
-  return res.status(200).json({
-    status: 200,
-    data: {
-      group: group.toObject(),
-    },
-    message: "Group fetched successfully",
-  });
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        group: group.toObject(),
+      },
+      "Groups fetched successfully"
+    )
+  );
 });
 
 const getArchiveGroup = asyncHandler(async (req, res) => {
@@ -270,19 +269,21 @@ const getArchiveGroup = asyncHandler(async (req, res) => {
 
   const groups = await Group.find({ group_createdBy: groupId });
 
-  return res.status(200).json({
-    status: 200,
-    data: {
-      groups: groups
-        .filter((group) => group.soft_delete === true)
-        .map((group) => group.toObject())
-        .slice(startIndex, endIndex),
-      TotalPage: Math.ceil(
-        groups.filter((group) => group.soft_delete === true).length / 10
-      ),
-    },
-    message: "Groups fetched successfully",
-  });
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        groups: groups
+          .filter((group) => group.soft_delete === true)
+          .map((group) => group.toObject())
+          .slice(startIndex, endIndex),
+        TotalPage: Math.ceil(
+          groups.filter((group) => group.soft_delete === true).length / 10
+        ),
+      },
+      "Groups fetched successfully"
+    )
+  );
 });
 export {
   createGroup,

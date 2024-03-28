@@ -118,10 +118,10 @@ const DeleteSplitWise = asyncHandler(async (req, res) => {
       .json(new ApiResponse(404, null, "Expense not found"));
   }
   if (expense.expence_createdBy.toString() !== req.user._id.toString()) {
-    return res.status(403).json({
-      status: 403,
-      message: "Unauthorized: This expense does not belong to the current user",
-    });
+    throw new ApiError(
+      403,
+      "Unauthorized: This expense does not belong to the current user"
+    );
   }
 
   const deletedExpense = await Splitwise.findByIdAndDelete(expenseId);
@@ -145,42 +145,36 @@ const editSplitWise = asyncHandler(async (req, res) => {
     const expense = await Splitwise.findById(expenseId);
 
     if (!expense) {
-      return res.status(404).json({
-        status: 404,
-        message: "Expense not found",
-      });
+      throw new ApiError(404, "Expense not found");
     }
 
     // Check if the expense belongs to the current user
     if (expense.expence_createdBy.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        status: 403,
-        message:
-          "Unauthorized: This expense does not belong to the current user",
-      });
+      throw new ApiError(
+        403,
+        "Unauthorized: This expense does not belong to the current user"
+      );
     }
 
-    // Update expense properties with provided updates
     for (const key in updates) {
       expense[key] = updates[key];
     }
 
-    // Save the updated expense
     await expense.save();
 
-    return res.status(200).json({
-      status: 200,
-      data: {
-        expense: expense.toObject(),
-      },
-      message: "Expense updated successfully",
-    });
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          { expense: expense.toObject() },
+          "Expense updated successfully"
+        )
+      );
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
-      status: 500,
-      message: "Internal Server Error",
-    });
+
+    throw new ApiError(500, "Internal Server Error");
   }
 });
 

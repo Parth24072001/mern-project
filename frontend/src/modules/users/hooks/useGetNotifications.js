@@ -5,7 +5,7 @@ import { getAllNotification } from "../api";
 const useGetNotifications = () => {
   return useQuery(["get-notifications"], () => getAllNotification(), {
     select: (res) => {
-      return res?.data;
+      return res?.data?.data;
     },
     onError: () => {
       toast("Group not found", { type: "error" });

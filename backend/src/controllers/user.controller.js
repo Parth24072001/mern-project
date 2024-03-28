@@ -1,7 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
-
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import { Notification } from "../models/notification.model.js";
@@ -24,44 +23,6 @@ const generateAccessAndRefereshTokens = async (userId) => {
     );
   }
 };
-
-// const registerUser = asyncHandler(async (req, res) => {
-//   const { fullName, email, username, password, inviteBy } = req.body;
-
-//   if (
-//     [fullName, email, username, password].some((field) => field?.trim() === "")
-//   ) {
-//     throw new ApiError(400, "All fields are required");
-//   }
-
-//   const existedUser = await User.findOne({
-//     $or: [{ username }, { email }],
-//   });
-
-//   if (existedUser) {
-//     throw new ApiError(409, "User with email or username already exists");
-//   }
-
-//   const user = await User.create({
-//     fullName,
-//     email,
-//     password,
-//     inviteBy,
-//     username: username?.toLowerCase(),
-//   });
-
-//   const createdUser = await User.findById(user._id).select(
-//     "-password -refreshToken"
-//   );
-
-//   if (!createdUser) {
-//     throw new ApiError(500, "Something went wrong while registering the user");
-//   }
-
-//   return res
-//     .status(201)
-//     .json(new ApiResponse(200, createdUser, "User registered Successfully"));
-// });
 
 const registerUser = async (req, res) => {
   const { fullName, email, username, password, inviteBy } = req.body;
@@ -98,54 +59,37 @@ const registerUser = async (req, res) => {
 
 const allUsers = async (req, res) => {
   try {
-    // Assuming you have access to the current user's ID
-    const currentUserId = req.user.id; // Adjust this based on how you access the current user ID
+    const currentUserId = req.user.id;
 
-    // Fetch all users except the current user
     const users = await User.find({ _id: { $ne: currentUserId } })
       .sort({ createdAt: -1 })
       .exec();
 
-    return res.status(200).json({
-      status: 200,
-      data: {
-        users: users.map((user) => {
-          return {
-            value: user.email,
-            label: user.username,
-          };
-        }),
-      },
-      message: "Users fetched successfully",
-    });
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          users: users.map((user) => {
+            return {
+              value: user.email,
+              label: user.username,
+            };
+          }),
+        },
+        "Users fetched successfully"
+      )
+    );
   } catch (error) {
-    return res.status(500).json({
-      status: 500,
-      error: error.message,
-      message: "Error fetching users",
-    });
+    throw new ApiError(500, "Error fetching users");
   }
 };
 
 const loginUser = asyncHandler(async (req, res) => {
-  // req body -> data
-  // username or email
-  //find the user
-  //password check
-  //access and referesh token
-  //send cookie
-
   const { email, username, password } = req.body;
 
   if (!username && !email) {
     throw new ApiError(400, "username or email is required");
   }
-
-  // Here is an alternative of above code based on logic discussed in video:
-  // if (!(username || email)) {
-  //     throw new ApiError(400, "username or email is required")
-
-  // }
 
   const user = await User.findOne({
     $or: [{ username }, { email }],

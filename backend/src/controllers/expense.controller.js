@@ -76,42 +76,46 @@ const getExpence = asyncHandler(async (req, res) => {
 
   let expences = await Expence.find(query).sort({ createdAt: -1 });
 
-  return res.status(200).json({
-    status: 200,
-    data: {
-      expences: expences
-        .filter((expence) => expence.soft_delete === false)
-        .map((expence) => expence.toObject())
-        .slice(startIndex, endIndex),
-      TotalPage: Math.ceil(
-        expences.filter((expence) => expence.soft_delete === false).length / 15
-      ),
-      TotalIncome: expences
-        .filter(
-          (expense) =>
-            expense.soft_delete === false && expense.expence_type === "income"
-        )
-        .reduce((total, expense) => total + expense.expence_money, 0),
-      TotalExpense: expences
-        .filter(
-          (expense) =>
-            expense.soft_delete === false && expense.expence_type === "expense"
-        )
-        .reduce((total, expense) => total + expense.expence_money, 0),
+  return res.status(201).json(
+    new ApiResponse(
+      200,
+      {
+        expences: expences
+          .filter((expence) => expence.soft_delete === false)
+          .map((expence) => expence.toObject())
+          .slice(startIndex, endIndex),
+        TotalPage: Math.ceil(
+          expences.filter((expence) => expence.soft_delete === false).length /
+            15
+        ),
+        TotalIncome: expences
+          .filter(
+            (expense) =>
+              expense.soft_delete === false && expense.expence_type === "income"
+          )
+          .reduce((total, expense) => total + expense.expence_money, 0),
+        TotalExpense: expences
+          .filter(
+            (expense) =>
+              expense.soft_delete === false &&
+              expense.expence_type === "expense"
+          )
+          .reduce((total, expense) => total + expense.expence_money, 0),
 
-      expence_data: expences.reduce((acc, expense) => {
-        if (expense.expence_type === "expense" && !expense.soft_delete) {
-          if (expense.expence_category in acc) {
-            acc[expense.expence_category] += expense.expence_money;
-          } else {
-            acc[expense.expence_category] = expense.expence_money;
+        expence_data: expences.reduce((acc, expense) => {
+          if (expense.expence_type === "expense" && !expense.soft_delete) {
+            if (expense.expence_category in acc) {
+              acc[expense.expence_category] += expense.expence_money;
+            } else {
+              acc[expense.expence_category] = expense.expence_money;
+            }
           }
-        }
-        return acc;
-      }, {}),
-    },
-    message: "Expenses fetched successfully",
-  });
+          return acc;
+        }, {}),
+      },
+      "Expenses fetched successfully"
+    )
+  );
 });
 
 const getOneExpence = asyncHandler(async (req, res) => {
@@ -119,27 +123,26 @@ const getOneExpence = asyncHandler(async (req, res) => {
   const expense = await Expence.findById(expenseId);
 
   if (!expense) {
-    return res.status(404).json({
-      status: 404,
-      message: "Expense not found",
-    });
+    throw new ApiError(404, "Expense not found");
   }
 
   // Check if the expense belongs to the current user
   if (expense.expence_createdBy.toString() !== req.user._id.toString()) {
-    return res.status(403).json({
-      status: 403,
-      message: "Unauthorized: This expense does not belong to the current user",
-    });
+    throw new ApiError(
+      403,
+      "Unauthorized: This expense does not belong to the current user"
+    );
   }
 
-  return res.status(200).json({
-    status: 200,
-    data: {
-      expense: expense.toObject(),
-    },
-    message: "Expense fetched successfully",
-  });
+  return res.status(201).json(
+    new ApiResponse(
+      200,
+      {
+        expense: expense.toObject(),
+      },
+      "Expense fetched successfully"
+    )
+  );
 });
 
 const editExpence = asyncHandler(async (req, res) => {
@@ -150,19 +153,15 @@ const editExpence = asyncHandler(async (req, res) => {
     const expense = await Expence.findById(expenseId);
 
     if (!expense) {
-      return res.status(404).json({
-        status: 404,
-        message: "Expense not found",
-      });
+      throw new ApiError(404, "Expense not found");
     }
 
     // Check if the expense belongs to the current user
     if (expense.expence_createdBy.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        status: 403,
-        message:
-          "Unauthorized: This expense does not belong to the current user",
-      });
+      throw new ApiError(
+        403,
+        "Unauthorized: This expense does not belong to the current user"
+      );
     }
 
     // Update expense properties with provided updates
@@ -173,19 +172,19 @@ const editExpence = asyncHandler(async (req, res) => {
     // Save the updated expense
     await expense.save();
 
-    return res.status(200).json({
-      status: 200,
-      data: {
-        expense: expense.toObject(),
-      },
-      message: "Expense updated successfully",
-    });
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          expense: expense.toObject(),
+        },
+        "Expense updated successfully"
+      )
+    );
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
-      status: 500,
-      message: "Internal Server Error",
-    });
+
+    throw new ApiError(500, "Internal Server Error");
   }
 });
 
@@ -201,19 +200,21 @@ const getArchiveExpence = asyncHandler(async (req, res) => {
   //   throw new ApiError(404, "No expenses found for the given user ID");
   // }
 
-  return res.status(200).json({
-    status: 200,
-    data: {
-      expences: expences
-        .filter((expence) => expence.soft_delete === true)
-        .map((expence) => expence.toObject())
-        .slice(startIndex, endIndex),
-      TotalPage: Math.ceil(
-        expences.filter((expence) => expence.soft_delete === true).length / 10
-      ),
-    },
-    message: "Expenses fetched successfully",
-  });
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        expences: expences
+          .filter((expence) => expence.soft_delete === true)
+          .map((expence) => expence.toObject())
+          .slice(startIndex, endIndex),
+        TotalPage: Math.ceil(
+          expences.filter((expence) => expence.soft_delete === true).length / 10
+        ),
+      },
+      "Expenses fetched successfully"
+    )
+  );
 });
 
 const softDeleteExpense = asyncHandler(async (req, res) => {
