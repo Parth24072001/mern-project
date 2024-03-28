@@ -2,10 +2,11 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { User } from "../models/user.model.js";
 import { Group } from "../models/group.model.js";
-import mongoose from "mongoose";
 import { Notification } from "../models/notification.model.js";
+import { Splitwise } from "../models/splitwise.model.js";
+
+import mongoose from "mongoose";
 
 const createGroup = asyncHandler(async (req, res) => {
   const { group_name } = req.body; // Remove group_member from here
@@ -223,21 +224,47 @@ const hardDeleteGroup = asyncHandler(async (req, res) => {
     return res.status(400).json(new ApiResponse(400, null, "Invalid group ID"));
   }
 
-  const group = await Group.findById(groupId);
+  try {
+    const group = await Group.findById(groupId);
 
-  if (!group) {
-    return res.status(404).json(new ApiResponse(404, null, "group not found"));
+    if (!group) {
+      return res
+        .status(404)
+        .json(new ApiResponse(404, null, "Group not found"));
+    }
+
+    // Find and delete Splitwise expenses associated with the group
+    const splitwiseExpenses = await Splitwise.find({
+      group_id: group.group_id,
+    });
+    for (const expense of splitwiseExpenses) {
+      await Splitwise.findByIdAndDelete(expense._id);
+    }
+
+    // Now delete the group
+    const deletedGroup = await Group.findByIdAndDelete(groupId);
+
+    if (!deletedGroup) {
+      return res
+        .status(404)
+        .json(new ApiResponse(404, null, "Group not found"));
+    }
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          null,
+          "Group and associated expenses deleted successfully"
+        )
+      );
+  } catch (error) {
+    console.error("Error deleting group and associated expenses:", error);
+    return res
+      .status(500)
+      .json(new ApiResponse(500, null, "Internal Server Error"));
   }
-
-  const deletedGroup = await Group.findByIdAndDelete(groupId);
-
-  if (!deletedGroup) {
-    return res.status(404).json(new ApiResponse(404, null, "Group not found"));
-  }
-
-  return res
-    .status(200)
-    .json(new ApiResponse(200, null, "Group deleted successfully"));
 });
 
 const getOneGroup = asyncHandler(async (req, res) => {
