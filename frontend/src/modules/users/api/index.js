@@ -9,6 +9,9 @@ export const NotiFication = (id) => {
 export const NotiFicationReadAll = () => {
   return api.patch(`notification/readall`);
 };
+export const getAllNotification = () => {
+  return api.get(`notification/notifications`);
+};
 
 export const Login = (data) => {
   return api.post(`users/login`, data);

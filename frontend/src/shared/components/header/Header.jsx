@@ -9,19 +9,29 @@ import MenuIcon from "../../../assets/images/icons/menu.svg?react";
 
 import { useNavigate } from "react-router-dom";
 import DarkModeSwitch from "../DarkModeSwitch/DarkModeSwitch";
-import { useUser } from "../../provider/user-provider/UserProvider";
 import useNotification from "../../../modules/users/hooks/useNotification";
 import useReadNotiFicationAll from "../../../modules/users/hooks/useReadNotiFicationAll";
+import useGetNotifications from "../../../modules/users/hooks/useGetNotifications";
 
 function Header({ setSidebarOpen, width }) {
   const navigate = useNavigate();
 
-  const { mutate: NotiFication } = useNotification();
-  const { mutate: NotiFicationReadAll } = useReadNotiFicationAll();
+  const {
+    data,
 
-  const user = useUser();
-  console.log(user?.user?.notification);
+    refetch,
+  } = useGetNotifications();
+  const { mutate: NotiFication } = useNotification(refetch);
+  const { mutate: NotiFicationReadAll } = useReadNotiFicationAll(refetch);
+
   const [notifiOpen, setNotifiOpen] = useState(false);
+
+  const NotiFicationRead = (id) => {
+    NotiFication(id);
+  };
+  const NotiFicationReadAlls = () => {
+    NotiFicationReadAll();
+  };
 
   useEffect(() => {
     if (width <= 1023) {
@@ -52,45 +62,55 @@ function Header({ setSidebarOpen, width }) {
             <button
               onClick={() => setNotifiOpen(!notifiOpen)}
               className={clsx({
-                notification: !user?.user?.allNotificationsRead,
+                notification: !data?.allRead,
               })}
             >
               <NotificationIcon />
             </button>
 
             {notifiOpen && (
-              <div className=" absolute top-[30px] right-0 max-h-[400px] w-[300px] overflow-scroll bg-white border">
-                {user?.user?.notification &&
-                  user?.user?.notification.map((noti, index) => {
-                    return (
-                      <div
-                        className=" relative flex justify-between items-center p-2 border-b-2"
-                        key={index}
+              <div
+                className={clsx(
+                  " absolute top-[30px] right-0 max-h-[400px] w-[300px] overflow-scroll bg-white border"
+                )}
+              >
+                {data?.notifications?.length === 0 ? (
+                  <div>data not found</div>
+                ) : (
+                  <>
+                    {!data?.allRead && (
+                      <button
+                        className="text-sm cursor-pointer text-blue-600 border p-1 m-2 block ml-auto"
+                        onClick={() => NotiFicationReadAlls()}
                       >
-                        <p className=" text-wrap text-sm text-left  pl-3 ">
-                          {noti?.message}
-                        </p>
-                        {noti?.read === false && (
-                          <span className=" absolute top-[15px] left-[6px] rounded-full w-2 h-2 bg-green-400"></span>
-                        )}
-                        {noti?.read === false && (
-                          <button
-                            className="text-sm cursor-pointer text-blue-600 border p-1"
-                            onClick={() => NotiFication(noti?._id)}
+                        Read All
+                      </button>
+                    )}
+                    {data?.notifications &&
+                      data?.notifications.map((noti, index) => {
+                        return (
+                          <div
+                            className=" relative flex justify-between items-center p-2 border-b-2"
+                            key={index}
                           >
-                            Read
-                          </button>
-                        )}
-                      </div>
-                    );
-                  })}
-                {!user?.user?.allNotificationsRead && (
-                  <button
-                    className="text-sm cursor-pointer text-blue-600 border p-1"
-                    onClick={() => NotiFicationReadAll()}
-                  >
-                    Read All
-                  </button>
+                            <p className=" text-wrap text-sm text-left  pl-3 ">
+                              {noti?.message}
+                            </p>
+                            {noti?.read === false && (
+                              <span className=" absolute top-[15px] left-[6px] rounded-full w-2 h-2 bg-green-400"></span>
+                            )}
+                            {noti?.read === false && (
+                              <button
+                                className="text-sm cursor-pointer text-blue-600 border p-1"
+                                onClick={() => NotiFicationRead(noti?._id)}
+                              >
+                                Read
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                  </>
                 )}
               </div>
             )}

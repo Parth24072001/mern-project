@@ -94,7 +94,7 @@ const SplitWiseDataListing = ({
                             <button
                               id="edit"
                               onClick={(e) => onclickEdit(e, data)}
-                              className=" cursor-pointer button_hover p-4"
+                              className=" cursor-pointer button_hover p-2"
                             >
                               <EditIcon />
                             </button>

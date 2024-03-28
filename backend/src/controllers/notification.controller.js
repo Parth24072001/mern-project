@@ -57,3 +57,32 @@ export const markAllNotificationsAsRead = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getAllNotifications = async (req, res) => {
+  const userId = req.user.id; // Assuming you have user information in req.user
+
+  try {
+    // Find the user based on the provided user ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find all notifications for the user
+    const notifications = await Notification.find({
+      message_for: user.email,
+    }).sort({ createdAt: -1 });
+
+    const allRead = notifications.every((notification) => notification.read);
+    const currentUserData = req.user.toObject();
+    if (!notifications.length) {
+      return res.status(200).json({ notifications, allRead, currentUserData });
+    }
+
+    res.status(200).json({ notifications, allRead, currentUserData });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
