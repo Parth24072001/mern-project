@@ -5,6 +5,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import { Notification } from "../models/notification.model.js";
 import userServices from "../services/userServices.js";
+import { sendEmailVerification } from "../services/email.js";
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -48,6 +49,7 @@ const registerUser = async (req, res) => {
       inviteBy,
       username?.toLowerCase()
     );
+    await sendEmailVerification(createdUser);
     return res
       .status(201)
       .json(new ApiResponse(200, createdUser, "User registered Successfully"));
@@ -133,6 +135,32 @@ const loginUser = asyncHandler(async (req, res) => {
         "User logged In Successfully"
       )
     );
+});
+
+const VerifyUser = asyncHandler(async (req, res) => {
+  const { email } = req.query;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new ApiError(400, "User not found");
+    }
+
+    user.email_verifiedat = Date.now();
+
+    await user.save();
+
+    res.status(200).json({ message: "Email verified successfully" });
+
+    return res
+      .status(200)
+
+      .json(new ApiResponse(200, {}, "Email verified successfully"));
+  } catch (error) {
+    console.error("Error verifying email:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
@@ -234,6 +262,11 @@ const getCurrentUser = asyncHandler(async (req, res) => {
         inviteBy: req.user?.username,
       },
     },
+    {
+      $match: {
+        email_verifiedat: { $ne: null },
+      },
+    },
   ]);
 
   const notification = await Notification.aggregate([
@@ -327,4 +360,5 @@ export {
   deleteAccount,
   forgetPassword,
   allUsers,
+  VerifyUser,
 };

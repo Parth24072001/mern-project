@@ -4,8 +4,8 @@ This template provides a minimal setup to get React working in Vite with HMR and
 
 Currently, two official plugins are available:
 
--   [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
--   [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 <!-- backend  -->
 
@@ -16,6 +16,17 @@ ACCESS_TOKEN_SECRET=gZLtRmGt1jcVkKr7
 ACCESS_TOKEN_EXPIRY=1d
 REFRESH_TOKEN_SECRET=gZLtRmGt1jcVkKr7
 REFRESH_TOKEN_EXPIRY=10d
+
+EMAIL_PASSWORD="osgkjdydugvqtjyt"
+EMAIL_USER="parth.radicalloop@gmail.com"
+
+APIURL=http://localhost:4000/api/v1
+
+# APIURL=https://backend.parthposhiya.xyz/api/v1
+
+# prod
+
+# CORS_ORIGIN="https://parthposhiya.xyz"
 
 # prod
 

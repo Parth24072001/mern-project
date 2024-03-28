@@ -40,6 +40,9 @@ const userSchema = new Schema(
     invite_link: {
       type: String,
     },
+    email_verifiedat: {
+      type: String,
+    },
   },
   {
     collection: "users",
@@ -52,6 +55,8 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
   this.password = await bcrypt.hash(this.password, 10);
+  this.email_verifiedat = null;
+
   next();
 });
 
