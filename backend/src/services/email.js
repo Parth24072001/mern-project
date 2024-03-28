@@ -15,9 +15,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendEmailVerification = (createdUser) => {
-  const verificationLink = `${
-    process.env.APIURL
-  }/users/verify/${encodeURIComponent(createdUser?.email)}}`;
+  const verificationLink = `${process.env.APIURL}/users/verify/${createdUser?.email}}`;
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: createdUser.email,
