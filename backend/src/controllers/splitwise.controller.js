@@ -5,6 +5,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.model.js";
 import { Splitwise } from "../models/splitwise.model.js";
 import mongoose from "mongoose";
+import splitwiseServices from "../services/splitwiseServices.js";
 
 const createSplitWiseExpence = asyncHandler(async (req, res) => {
   const {
@@ -39,22 +40,17 @@ const createSplitWiseExpence = asyncHandler(async (req, res) => {
     expence_id = Number(lastExpence.expence_id) + 1;
   }
 
-  const expence = await Splitwise.create({
+  const expence = await splitwiseServices.createSplitWise(
     expence_id,
     expence_title,
     expence_type,
     expence_category,
     expence_money,
     expence_createdBy,
-
     splitwise_manually,
     group_id,
-    splitwise,
-  });
-
-  if (!expence) {
-    throw new ApiError(500, "Something went wrong while creating a expence");
-  }
+    splitwise
+  );
 
   return res
     .status(201)

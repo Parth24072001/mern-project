@@ -28,36 +28,3 @@ const createUser = async (fullName, email, password, inviteBy, username) => {
   }
 };
 export default { createUser };
-
-//   const registerUser = async (req, res) => {
-//     const { fullName, email, username, password, inviteBy } = req.body;
-
-//     if (
-//       [fullName, email, username, password].some((field) => field?.trim() === "")
-//     ) {
-//       throw new ApiError(400, "All fields are required");
-//     }
-//     try {
-//         const existedUser = await User.findOne({
-//             $or: [{ username }, { email }],
-//           });
-
-//           if (existedUser) {
-//             throw new ApiError(409, "User with email or username already exists");
-//           }
-
-//       const createdUser = await talesServices.createUser(
-//         fullName,
-//         email,
-//         password,
-//         inviteBy,
-//          username?.toLowerCase()
-//       );
-//       return res
-//       .status(201)
-//       .json(new ApiResponse(200, createdUser, "User registered Successfully"));
-//     } catch (error) {
-//       console.error("Something Went Wrong!", error);
-//       res.status(500).json({ error: error });
-//     }
-//   };
